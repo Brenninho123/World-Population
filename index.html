@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Analytics Platform — Live Trackers</title>
+    <title>Global Metrics Platform — Advanced Analytics Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,23 +15,44 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
+        :root {
+            --accent-primary: #3b82f6;
+            --accent-primary-glow: rgba(59, 130, 246, 0.15);
+        }
+
+        body.mode-humans {
+            --accent-primary: #3b82f6;
+            --accent-primary-glow: rgba(59, 130, 246, 0.15);
+        }
+
+        body.mode-dogs {
+            --accent-primary: #f59e0b;
+            --accent-primary-glow: rgba(245, 158, 11, 0.12);
+        }
+
+        body.mode-cats {
+            --accent-primary: #ec4899;
+            --accent-primary-glow: rgba(236, 72, 153, 0.15);
+        }
+
         body {
-            background-color: #030712;
+            background-color: #05070f;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, var(--accent-primary-glow) 0px, transparent 40%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.04) 0px, transparent 45%);
             color: #f3f4f6;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background 0.5s ease;
         }
 
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
@@ -39,40 +60,36 @@
 
         .logo {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.35rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.75px;
             color: #ffffff;
         }
 
         .logo span {
-            background: linear-gradient(135deg, #3b82f6, #60a5fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: background 0.3s ease;
+            color: var(--accent-primary);
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        body.mode-dogs .logo span { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
-        body.mode-cats .logo span { background: linear-gradient(135deg, #ec4899, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
         .live-indicator {
-            background: rgba(16, 185, 129, 0.06);
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            background: rgba(16, 185, 129, 0.04);
+            border: 1px solid rgba(16, 185, 129, 0.15);
             color: #10b981;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
             display: flex;
             align-items: center;
             gap: 0.6rem;
+            backdrop-filter: blur(4px);
         }
 
         .live-indicator .dot {
@@ -84,24 +101,29 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            0% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+            50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
             100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
         .settings-btn {
-            background: transparent;
-            border: none;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
             cursor: pointer;
             color: #9ca3af;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.2s, transform 0.2s;
+            transition: all 0.3s ease;
         }
 
         .settings-btn:hover {
             color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
             transform: rotate(45deg);
         }
 
@@ -110,11 +132,11 @@
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding: 1rem 1.5rem 4rem 1.5rem;
+            padding: 0 1.5rem 5rem 1.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 3.5rem;
+            gap: 4.5rem;
         }
 
         .toggle-wrapper {
@@ -123,22 +145,23 @@
         }
 
         .toggle-container {
-            background: rgba(17, 24, 39, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 0.35rem;
+            background: rgba(10, 12, 22, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 0.4rem;
             border-radius: 100px;
             display: flex;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            width: 320px;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.02), 0 20px 40px rgba(0,0,0,0.4);
+            width: 360px;
+            backdrop-filter: blur(10px);
         }
 
         .toggle-btn {
             background: transparent;
             border: none;
-            color: #9ca3af;
+            color: #6b7280;
             flex: 1;
-            padding: 0.6rem 0;
+            padding: 0.7rem 0;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
@@ -154,28 +177,19 @@
 
         .toggle-slider {
             position: absolute;
-            top: 0.35rem;
-            left: 0.35rem;
-            bottom: 0.35rem;
-            width: calc(33.333% - 0.46rem);
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            top: 0.4rem;
+            left: 0.4rem;
+            bottom: 0.4rem;
+            width: calc(33.333% - 0.54rem);
+            background: var(--accent-primary);
             border-radius: 100px;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.4s ease;
             z-index: 1;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        body.mode-dogs .toggle-slider {
-            transform: translateX(100%);
-            background: linear-gradient(135deg, #d97706, #f59e0b);
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
-        }
-
-        body.mode-cats .toggle-slider {
-            transform: translateX(200%);
-            background: linear-gradient(135deg, #db2777, #ec4899);
-            box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3);
-        }
+        body.mode-dogs .toggle-slider { transform: translateX(100%); }
+        body.mode-cats .toggle-slider { transform: translateX(200%); }
 
         .counter-section {
             text-align: center;
@@ -183,28 +197,28 @@
         }
 
         .counter-section h1 {
-            font-size: 0.85rem;
-            color: #9ca3af;
+            font-size: 0.75rem;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-weight: 700;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .counter-wrapper {
             display: inline-block;
             position: relative;
-            padding: 1rem 2rem;
+            padding: 1rem 0;
         }
 
         .counter {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3.2rem, 9vw, 6.5rem);
-            font-weight: 700;
+            font-size: clamp(3.5rem, 10vw, 7.5rem);
+            font-weight: 500;
             color: #ffffff;
-            letter-spacing: -1px;
-            line-height: 1;
-            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            letter-spacing: -2px;
+            line-height: 0.95;
+            background: linear-gradient(180deg, #ffffff 30%, rgba(255,255,255,0.7) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -214,48 +228,49 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
-            height: 60%;
-            background: radial-gradient(rgba(59, 130, 246, 0.12), transparent 60%);
+            width: 120%;
+            height: 130%;
+            background: radial-gradient(var(--accent-primary-glow) 0%, transparent 65%);
             z-index: -1;
             pointer-events: none;
-            transition: background 0.3s ease;
+            transition: background 0.4s ease;
+            filter: blur(20px);
         }
 
-        body.mode-dogs .counter-glow { background: radial-gradient(rgba(245, 158, 11, 0.1), transparent 60%); }
-        body.mode-cats .counter-glow { background: radial-gradient(rgba(236, 72, 153, 0.1), transparent 60%); }
-
         .subtitle {
-            color: #6b7280;
-            font-size: 1rem;
-            font-weight: 500;
+            color: #9ca3af;
+            font-size: 1.1rem;
+            font-weight: 400;
             margin-top: 1.5rem;
+            opacity: 0.8;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.75rem;
         }
 
         .stat-card {
-            background: rgba(17, 24, 39, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 24px;
-            padding: 2rem;
+            background: rgba(11, 15, 28, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 32px;
+            padding: 2.5rem 2.25rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
             position: relative;
             overflow: hidden;
-            transition: border-color 0.3s ease, transform 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
             border-color: rgba(255, 255, 255, 0.08);
+            background: rgba(15, 20, 38, 0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
 
         .stat-card::before {
@@ -264,62 +279,69 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            opacity: 0.7;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.02), transparent 70%);
+            pointer-events: none;
         }
 
-        .stat-card.births::before { background: linear-gradient(90deg, #10b981, transparent); }
-        .stat-card.deaths::before { background: linear-gradient(90deg, #ef4444, transparent); }
-        
-        .stat-card.growth::before { background: linear-gradient(90deg, #3b82f6, transparent); }
-        body.mode-dogs .stat-card.growth::before { background: linear-gradient(90deg, #f59e0b, transparent); }
-        body.mode-cats .stat-card.growth::before { background: linear-gradient(90deg, #ec4899, transparent); }
+        .stat-card-border-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            opacity: 0.8;
+            transition: background 0.4s ease;
+        }
+
+        .stat-card.births .stat-card-border-track { background: linear-gradient(90deg, #10b981, transparent 80%); }
+        .stat-card.deaths .stat-card-border-track { background: linear-gradient(90deg, #ef4444, transparent 80%); }
+        .stat-card.growth .stat-card-border-track { background: linear-gradient(90deg, var(--accent-primary), transparent 80%); }
 
         .stat-card h3 {
-            font-size: 0.8rem;
-            color: #9ca3af;
+            font-size: 0.75rem;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         .stat-number {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.25rem;
-            font-weight: 700;
+            font-size: 2.75rem;
+            font-weight: 500;
             color: #ffffff;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
+            line-height: 1.1;
         }
 
-        .stat-card.births .stat-number { color: #10b981; }
-        .stat-card.deaths .stat-number { color: #f87171; }
-        
-        .stat-card.growth .stat-number { color: #60a5fa; }
-        body.mode-dogs .stat-card.growth .stat-number { color: #fbbf24; }
-        body.mode-cats .stat-card.growth .stat-number { color: #f472b6; }
+        .stat-card.births .stat-number { color: #10b981; text-shadow: 0 0 40px rgba(16, 185, 129, 0.1); }
+        .stat-card.deaths .stat-number { color: #f87171; text-shadow: 0 0 40px rgba(248, 113, 113, 0.1); }
+        .stat-card.growth .stat-number { color: #ffffff; }
 
         .stat-meta {
             font-size: 0.8rem;
             color: #4b5563;
             margin-top: auto;
+            font-weight: 500;
         }
 
-        /* Modal Settings Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(3, 7, 18, 0.8);
-            backdrop-filter: blur(8px);
+            background: rgba(3, 4, 9, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 100;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .modal-overlay.open {
@@ -328,15 +350,15 @@
         }
 
         .modal {
-            background: #0b0f19;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
+            background: #090c15;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 36px;
+            padding: 2.5rem;
+            width: 92%;
+            max-width: 440px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+            transform: scale(0.92);
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .modal-overlay.open .modal {
@@ -347,77 +369,98 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .modal-header h2 {
-            font-size: 1.1rem;
-            font-weight: 700;
+            font-size: 1.25rem;
+            font-weight: 600;
             font-family: 'Space Grotesk', sans-serif;
+            color: #ffffff;
         }
 
         .close-btn {
-            background: transparent;
-            border: none;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
             color: #6b7280;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
 
-        .close-btn:hover { color: #ffffff; }
+        .close-btn:hover { color: #ffffff; border-color: rgba(255,255,255,0.15); }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .form-group label {
-            font-size: 0.8rem;
-            color: #9ca3af;
-            font-weight: 600;
+            font-size: 0.75rem;
+            color: #4b5563;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1.5px;
         }
 
         .select-input {
-            background: #111827;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: #121622;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             color: #ffffff;
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            font-size: 0.95rem;
             font-weight: 500;
             outline: none;
             cursor: pointer;
+            transition: all 0.3s;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+            background-repeat: no-repeat;
+            background-position: right 1.25rem center;
+            background-size: 16px;
+        }
+
+        .select-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         footer {
             text-align: center;
-            padding: 2.5rem;
-            color: #4b5563;
+            padding: 3rem 2rem;
+            color: #374151;
             font-size: 0.8rem;
             font-weight: 500;
             letter-spacing: 0.3px;
-            border-top: 1px solid rgba(255, 255, 255, 0.03);
-            background: rgba(3, 7, 18, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            background: rgba(3, 4, 9, 0.4);
+            margin-top: auto;
         }
 
         @media (max-width: 640px) {
-            header { padding: 1.5rem 1rem; }
-            .container { padding: 1rem 1rem 3rem 1rem; gap: 2.5rem; }
-            .stat-card { padding: 1.5rem; }
+            header { padding: 2rem 1.5rem; }
+            .container { padding: 0 1.25rem 4rem 1.25rem; gap: 3.5rem; }
+            .stat-card { padding: 2rem 1.75rem; }
+            .counter { font-size: clamp(2.8rem, 12vw, 4rem); }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Global<span>Analytics</span></div>
+        <div class="logo">Global<span>Metrics</span></div>
         <div class="header-actions">
             <div id="live-tag" class="live-indicator"><span class="dot"></span> LIVE METRICS</div>
             <button class="settings-btn" onclick="toggleModal(true)">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
             </button>
         </div>
     </header>
@@ -426,7 +469,7 @@
         <div class="toggle-wrapper">
             <div class="toggle-container">
                 <div class="toggle-slider"></div>
-                <button id="tab-humans" class="toggle-btn active" onclick="setMode('humans')">Humans</button>
+                <button id="tab-humans" class="toggle-btn" onclick="setMode('humans')">Humans</button>
                 <button id="tab-dogs" class="toggle-btn" onclick="setMode('dogs')">Dogs</button>
                 <button id="tab-cats" class="toggle-btn" onclick="setMode('cats')">Cats</button>
             </div>
@@ -443,16 +486,19 @@
 
         <section class="stats-grid">
             <div class="stat-card births">
+                <div class="stat-card-border-track"></div>
                 <h3 id="label-births">...</h3>
                 <div id="stat-births" class="stat-number">0</div>
                 <div id="meta-births" class="stat-meta">...</div>
             </div>
             <div class="stat-card deaths">
+                <div class="stat-card-border-track"></div>
                 <h3 id="label-deaths">...</h3>
                 <div id="stat-deaths" class="stat-number">0</div>
                 <div id="meta-deaths" class="stat-meta">...</div>
             </div>
             <div class="stat-card growth">
+                <div class="stat-card-border-track"></div>
                 <h3 id="label-growth">...</h3>
                 <div id="stat-growth" class="stat-number">0</div>
                 <div id="meta-growth" class="stat-meta">...</div>
@@ -471,6 +517,7 @@
                 <select class="select-input" onchange="setLanguage(this.value)">
                     <option value="en">English</option>
                     <option value="pt">Português</option>
+                    <option value="es">Español</option>
                 </select>
             </div>
         </div>
@@ -493,7 +540,8 @@
                 metaGrowth: 'Daily global surplus balance',
                 tabHumans: 'Humans',
                 tabDogs: 'Dogs',
-                tabCats: 'Cats'
+                tabCats: 'Cats',
+                langLocale: 'en-US'
             },
             pt: {
                 liveTag: '<span class="dot"></span> DADOS AO VIVO',
@@ -503,7 +551,19 @@
                 metaGrowth: 'Balanço diário do excedente global',
                 tabHumans: 'Humanos',
                 tabDogs: 'Cães',
-                tabCats: 'Gatos'
+                tabCats: 'Gatos',
+                langLocale: 'pt-BR'
+            },
+            es: {
+                liveTag: '<span class="dot"></span> DATOS EN VIVO',
+                modalTitle: 'Opciones',
+                labelLang: 'Seleccionar Idioma',
+                labelGrowth: 'Crecimiento Neto',
+                metaGrowth: 'Balance de excedente global diario',
+                tabHumans: 'Humanos',
+                tabDogs: 'Perros',
+                tabCats: 'Gatos',
+                langLocale: 'es-ES'
             }
         };
 
@@ -530,6 +590,15 @@
                         metaBirths: '~4.3 nascimentos por segundo',
                         metaDeaths: '~1.9 mortes por segundo',
                         footer: '&copy; 2026 Plataforma de População Mundial. Extrapolado de variantes matemáticas dinâmicas em tempo real da ONU.'
+                    },
+                    es: {
+                        heading: 'Población Mundial Estimada',
+                        subtitle: 'Individuos vivos en el planeta Tierra',
+                        labelBirths: 'Nacimientos hoy',
+                        labelDeaths: 'Muertes hoy',
+                        metaBirths: '~4.3 nacimientos por segundo',
+                        metaDeaths: '~1.9 muertes por segundo',
+                        footer: '&copy; 2026 Plataforma de Población Mundial. Extrapolado de variantes matemáticas dinámicas en tiempo real de la ONU.'
                     }
                 }
             },
@@ -543,6 +612,7 @@
                         subtitle: 'Canines living worldwide across all environments',
                         labelBirths: 'Puppies born today',
                         labelDeaths: 'Dog deaths today',
+                        metaBirths:saveNumber = '~3.8 puppies born per second',
                         metaBirths: '~3.8 puppies born per second',
                         metaDeaths: '~1.4 deaths per second',
                         footer: '&copy; 2026 Global Canine Census Framework. Simulated from international veterinary population projections.'
@@ -555,6 +625,15 @@
                         metaBirths: '~3.8 filhotes por segundo',
                         metaDeaths: '~1.4 mortes por segundo',
                         footer: '&copy; 2026 Censo Canino Global. Simulado através de projeções demográficas veterinárias internacionais.'
+                    },
+                    es: {
+                        heading: 'Población Estimada de Perros',
+                        subtitle: 'Caninos que viven en todo el mundo en todos los entornos',
+                        labelBirths: 'Cachorros nacidos hoy',
+                        labelDeaths: 'Muertes de perros hoy',
+                        metaBirths: '~3.8 cachorros por segundo',
+                        metaDeaths: '~1.4 muertes por segundo',
+                        footer: '&copy; 2026 Marco del Censo Canino Global. Simulado a partir de proyecciones demográficas veterinarias internacionales.'
                     }
                 }
             },
@@ -580,6 +659,15 @@
                         metaBirths: '~4.1 gatinhos nascidos por segundo',
                         metaDeaths: '~1.5 mortes por segundo',
                         footer: '&copy; 2026 Banco de Dados Felino Global. Modelado a partir de padrões de pesquisas ecológicas e domiciliares.'
+                    },
+                    es: {
+                        heading: 'Población Estimada de Gatos',
+                        subtitle: 'Felinos domesticados y callejeros a nivel global',
+                        labelBirths: 'Gatitos nacidos hoy',
+                        labelDeaths: 'Muertes de gatos hoy',
+                        metaBirths: '~4.1 gatitos por segundo',
+                        metaDeaths: '~1.5 muertes por segundo',
+                        footer: '&copy; 2026 Base de Datos Global Felina. Modelado a partir de patrones de encuestas ecológicas y de hogares del mundo.'
                     }
                 }
             }
@@ -632,7 +720,8 @@
         }
 
         function formatNumber(num) {
-            return Math.floor(num).toLocaleString(currentLang === 'en' ? 'en-US' : 'pt-BR');
+            const locale = translationTable[currentLang].langLocale;
+            return Math.floor(num).toLocaleString(locale);
         }
 
         function updateMetrics() {
