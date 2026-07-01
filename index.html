@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Counter Platform — Real-Time Live Analytics</title>
+    <title>Global Analytics Platform — Live Trackers</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
             background-color: #030712;
             background-image: 
                 radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
             color: #f3f4f6;
             display: flex;
             flex-direction: column;
@@ -52,10 +52,13 @@
             transition: background 0.3s ease;
         }
 
-        body.mode-dogs .logo span {
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        body.mode-dogs .logo span { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        body.mode-cats .logo span { background: linear-gradient(135deg, #ec4899, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
         }
 
         .live-indicator {
@@ -70,7 +73,6 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.05);
         }
 
         .live-indicator .dot {
@@ -85,6 +87,22 @@
             0% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
             50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
             100% { transform: scale(0.9); opacity: 0.4; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .settings-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .settings-btn:hover {
+            color: #ffffff;
+            transform: rotate(45deg);
         }
 
         .container {
@@ -102,7 +120,6 @@
         .toggle-wrapper {
             display: flex;
             justify-content: center;
-            margin-bottom: 0.5rem;
         }
 
         .toggle-container {
@@ -113,21 +130,21 @@
             display: flex;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 320px;
         }
 
         .toggle-btn {
             background: transparent;
             border: none;
             color: #9ca3af;
-            padding: 0.6rem 1.5rem;
+            flex: 1;
+            padding: 0.6rem 0;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             border-radius: 100px;
             z-index: 2;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            text-align: center;
             transition: color 0.3s ease;
         }
 
@@ -140,7 +157,7 @@
             top: 0.35rem;
             left: 0.35rem;
             bottom: 0.35rem;
-            width: calc(50% - 0.35rem);
+            width: calc(33.333% - 0.46rem);
             background: linear-gradient(135deg, #2563eb, #3b82f6);
             border-radius: 100px;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
@@ -154,20 +171,24 @@
             box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
         }
 
+        body.mode-cats .toggle-slider {
+            transform: translateX(200%);
+            background: linear-gradient(135deg, #db2777, #ec4899);
+            box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3);
+        }
+
         .counter-section {
             text-align: center;
             position: relative;
         }
 
         .counter-section h1 {
-            id: label-main-heading;
             font-size: 0.85rem;
             color: #9ca3af;
             text-transform: uppercase;
             letter-spacing: 3px;
             font-weight: 700;
             margin-bottom: 1.5rem;
-            transition: color 0.3s ease;
         }
 
         .counter-wrapper {
@@ -201,9 +222,8 @@
             transition: background 0.3s ease;
         }
 
-        body.mode-dogs .counter-glow {
-            background: radial-gradient(rgba(245, 158, 11, 0.1), transparent 60%);
-        }
+        body.mode-dogs .counter-glow { background: radial-gradient(rgba(245, 158, 11, 0.1), transparent 60%); }
+        body.mode-cats .counter-glow { background: radial-gradient(rgba(236, 72, 153, 0.1), transparent 60%); }
 
         .subtitle {
             color: #6b7280;
@@ -246,7 +266,6 @@
             width: 100%;
             height: 3px;
             opacity: 0.7;
-            transition: background 0.3s ease;
         }
 
         .stat-card.births::before { background: linear-gradient(90deg, #10b981, transparent); }
@@ -254,6 +273,7 @@
         
         .stat-card.growth::before { background: linear-gradient(90deg, #3b82f6, transparent); }
         body.mode-dogs .stat-card.growth::before { background: linear-gradient(90deg, #f59e0b, transparent); }
+        body.mode-cats .stat-card.growth::before { background: linear-gradient(90deg, #ec4899, transparent); }
 
         .stat-card h3 {
             font-size: 0.8rem;
@@ -269,7 +289,6 @@
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.5px;
-            transition: color 0.3s ease;
         }
 
         .stat-card.births .stat-number { color: #10b981; }
@@ -277,11 +296,100 @@
         
         .stat-card.growth .stat-number { color: #60a5fa; }
         body.mode-dogs .stat-card.growth .stat-number { color: #fbbf24; }
+        body.mode-cats .stat-card.growth .stat-number { color: #f472b6; }
 
         .stat-meta {
             font-size: 0.8rem;
             color: #4b5563;
             margin-top: auto;
+        }
+
+        /* Modal Settings Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: #0b0f19;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.open .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .close-btn:hover { color: #ffffff; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .select-input {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            outline: none;
+            cursor: pointer;
         }
 
         footer {
@@ -306,93 +414,212 @@
 
     <header>
         <div class="logo">Global<span>Analytics</span></div>
-        <div class="live-indicator"><span class="dot"></span> LIVE METRICS</div>
+        <div class="header-actions">
+            <div id="live-tag" class="live-indicator"><span class="dot"></span> LIVE METRICS</div>
+            <button class="settings-btn" onclick="toggleModal(true)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+        </div>
     </header>
 
     <main class="container">
         <div class="toggle-wrapper">
             <div class="toggle-container">
                 <div class="toggle-slider"></div>
-                <button id="btn-humans" class="toggle-btn active" onclick="setMode('humans')">
-                    Humans
-                </button>
-                <button id="btn-dogs" class="toggle-btn" onclick="setMode('dogs')">
-                    Dogs
-                </button>
+                <button id="tab-humans" class="toggle-btn active" onclick="setMode('humans')">Humans</button>
+                <button id="tab-dogs" class="toggle-btn" onclick="setMode('dogs')">Dogs</button>
+                <button id="tab-cats" class="toggle-btn" onclick="setMode('cats')">Cats</button>
             </div>
         </div>
 
         <section class="counter-section">
-            <h1 id="main-heading">Estimated World Population</h1>
+            <h1 id="main-heading">...</h1>
             <div class="counter-wrapper">
                 <div class="counter-glow"></div>
                 <div id="main-counter" class="counter">0</div>
             </div>
-            <p id="main-subtitle" class="subtitle">Living individuals on planet Earth</p>
+            <p id="main-subtitle" class="subtitle">...</p>
         </section>
 
         <section class="stats-grid">
             <div class="stat-card births">
-                <h3 id="label-births">Births today</h3>
+                <h3 id="label-births">...</h3>
                 <div id="stat-births" class="stat-number">0</div>
                 <div id="meta-births" class="stat-meta">...</div>
             </div>
             <div class="stat-card deaths">
-                <h3 id="label-deaths">Deaths today</h3>
+                <h3 id="label-deaths">...</h3>
                 <div id="stat-deaths" class="stat-number">0</div>
                 <div id="meta-deaths" class="stat-meta">...</div>
             </div>
             <div class="stat-card growth">
-                <h3 id="label-growth">Net growth</h3>
+                <h3 id="label-growth">...</h3>
                 <div id="stat-growth" class="stat-number">0</div>
-                <div id="meta-growth" class="stat-meta">Daily global surplus balance</div>
+                <div id="meta-growth" class="stat-meta">...</div>
             </div>
         </section>
     </main>
 
+    <div id="settings-modal" class="modal-overlay" onclick="toggleModal(false)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modal-title">Options</h2>
+                <button class="close-btn" onclick="toggleModal(false)">&times;</button>
+            </div>
+            <div class="form-group">
+                <label id="label-lang">Select Language</label>
+                <select class="select-input" onchange="setLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="pt">Português</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <p id="footer-text">&copy; 2026 Platform Tracker. Extrapolated from global linear metrics variants.</p>
+        <p id="footer-text">...</p>
     </footer>
 
     <script>
         let currentMode = 'humans';
+        let currentLang = 'en';
+
+        const translationTable = {
+            en: {
+                liveTag: '<span class="dot"></span> LIVE DATA',
+                modalTitle: 'Options',
+                labelLang: 'Select Language',
+                labelGrowth: 'Net Growth',
+                metaGrowth: 'Daily global surplus balance',
+                tabHumans: 'Humans',
+                tabDogs: 'Dogs',
+                tabCats: 'Cats'
+            },
+            pt: {
+                liveTag: '<span class="dot"></span> DADOS AO VIVO',
+                modalTitle: 'Opções',
+                labelLang: 'Escolher Língua',
+                labelGrowth: 'Crescimento Líquido',
+                metaGrowth: 'Balanço diário do excedente global',
+                tabHumans: 'Humanos',
+                tabDogs: 'Cães',
+                tabCats: 'Gatos'
+            }
+        };
 
         const datasets = {
             humans: {
                 basePopulation: 8118500000,
                 birthsPerSecond: 4.3,
                 deathsPerSecond: 1.9,
-                heading: 'Estimated World Population',
-                subtitle: 'Living individuals on planet Earth',
-                labelBirths: 'Births today',
-                labelDeaths: 'Deaths today',
-                metaBirths: '~4.3 births per second',
-                metaDeaths: '~1.9 deaths per second',
-                footer: '&copy; 2026 World Population Platform. Extrapolated from real-time dynamic UN mathematical variants.'
+                translations: {
+                    en: {
+                        heading: 'Estimated World Population',
+                        subtitle: 'Living individuals on planet Earth',
+                        labelBirths: 'Births today',
+                        labelDeaths: 'Deaths today',
+                        metaBirths: '~4.3 births per second',
+                        metaDeaths: '~1.9 deaths per second',
+                        footer: '&copy; 2026 World Population Platform. Extrapolated from real-time dynamic UN mathematical variants.'
+                    },
+                    pt: {
+                        heading: 'População Mundial Estimada',
+                        subtitle: 'Indivíduos vivos no planeta Terra',
+                        labelBirths: 'Nascimentos hoje',
+                        labelDeaths: 'Mortes hoje',
+                        metaBirths: '~4.3 nascimentos por segundo',
+                        metaDeaths: '~1.9 mortes por segundo',
+                        footer: '&copy; 2026 Plataforma de População Mundial. Extrapolado de variantes matemáticas dinâmicas em tempo real da ONU.'
+                    }
+                }
             },
             dogs: {
                 basePopulation: 923000000,
                 birthsPerSecond: 3.8,
                 deathsPerSecond: 1.4,
-                heading: 'Estimated Dog Population',
-                subtitle: 'Canines living worldwide across all environments',
-                labelBirths: 'Puppies born today',
-                labelDeaths: 'Dog deaths today',
-                metaBirths: '~3.8 puppies born per second',
-                metaDeaths: '~1.4 deaths per second',
-                footer: '&copy; 2026 Global Canine Census Framework. Simulated from international veterinary population projections.'
+                translations: {
+                    en: {
+                        heading: 'Estimated Dog Population',
+                        subtitle: 'Canines living worldwide across all environments',
+                        labelBirths: 'Puppies born today',
+                        labelDeaths: 'Dog deaths today',
+                        metaBirths: '~3.8 puppies born per second',
+                        metaDeaths: '~1.4 deaths per second',
+                        footer: '&copy; 2026 Global Canine Census Framework. Simulated from international veterinary population projections.'
+                    },
+                    pt: {
+                        heading: 'População Estimada de Cães',
+                        subtitle: 'Caninos vivendo globalmente em todos os ambientes',
+                        labelBirths: 'Filhotes nascidos hoje',
+                        labelDeaths: 'Mortes de cães hoje',
+                        metaBirths: '~3.8 filhotes por segundo',
+                        metaDeaths: '~1.4 mortes por segundo',
+                        footer: '&copy; 2026 Censo Canino Global. Simulado através de projeções demográficas veterinárias internacionais.'
+                    }
+                }
+            },
+            cats: {
+                basePopulation: 956000000,
+                birthsPerSecond: 4.1,
+                deathsPerSecond: 1.5,
+                translations: {
+                    en: {
+                        heading: 'Estimated Cat Population',
+                        subtitle: 'Felines domesticated and free-roaming globally',
+                        labelBirths: 'Kittens born today',
+                        labelDeaths: 'Cat deaths today',
+                        metaBirths: '~4.1 kittens born per second',
+                        metaDeaths: '~1.5 deaths per second',
+                        footer: '&copy; 2026 Global Feline Database. Modeled from world ecological and household survey patterns.'
+                    },
+                    pt: {
+                        heading: 'População Estimada de Gatos',
+                        subtitle: 'Felinos domesticados e errantes globalmente',
+                        labelBirths: 'Gatinhos nascidos hoje',
+                        labelDeaths: 'Mortes de gatos hoje',
+                        metaBirths: '~4.1 gatinhos nascidos por segundo',
+                        metaDeaths: '~1.5 mortes por segundo',
+                        footer: '&copy; 2026 Banco de Dados Felino Global. Modelado a partir de padrões de pesquisas ecológicas e domiciliares.'
+                    }
+                }
             }
         };
+
+        function toggleModal(open) {
+            document.getElementById('settings-modal').classList.toggle('open', open);
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const ui = translationTable[lang];
+            
+            document.getElementById('live-tag').innerHTML = ui.liveTag;
+            document.getElementById('modal-title').innerText = ui.modalTitle;
+            document.getElementById('label-lang').innerText = ui.labelLang;
+            document.getElementById('label-growth').innerText = ui.labelGrowth;
+            document.getElementById('meta-growth').innerText = ui.metaGrowth;
+            
+            document.getElementById('tab-humans').innerText = ui.tabHumans;
+            document.getElementById('tab-dogs').innerText = ui.tabDogs;
+            document.getElementById('tab-cats').innerText = ui.tabCats;
+
+            renderTextContent();
+        }
 
         function setMode(mode) {
             currentMode = mode;
             
-            document.getElementById('btn-humans').classList.toggle('active', mode === 'humans');
-            document.getElementById('btn-dogs').classList.toggle('active', mode === 'dogs');
+            document.getElementById('tab-humans').classList.toggle('active', mode === 'humans');
+            document.getElementById('tab-dogs').classList.toggle('active', mode === 'dogs');
+            document.getElementById('tab-cats').classList.toggle('active', mode === 'cats');
             
-            document.body.className = mode === 'dogs' ? 'mode-dogs' : '';
+            document.body.className = `mode-${mode}`;
+            renderTextContent();
+        }
+
+        function renderTextContent() {
+            const data = datasets[currentMode].translations[currentLang];
             
-            const data = datasets[mode];
             document.getElementById('main-heading').innerText = data.heading;
             document.getElementById('main-subtitle').innerText = data.subtitle;
             document.getElementById('label-births').innerText = data.labelBirths;
@@ -405,7 +632,7 @@
         }
 
         function formatNumber(num) {
-            return Math.floor(num).toLocaleString('en-US');
+            return Math.floor(num).toLocaleString(currentLang === 'en' ? 'en-US' : 'pt-BR');
         }
 
         function updateMetrics() {
@@ -429,6 +656,7 @@
         }
 
         setInterval(updateMetrics, 100);
+        setLanguage('en');
         setMode('humans');
     </script>
 </body>
