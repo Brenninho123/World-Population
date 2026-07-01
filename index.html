@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>World Population — Real-Time Global Analytics</title>
+    <title>Global Counter Platform — Real-Time Live Analytics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
             background-color: #030712;
             background-image: 
                 radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+                radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
             color: #f3f4f6;
             display: flex;
             flex-direction: column;
@@ -43,13 +43,17 @@
             font-weight: 700;
             letter-spacing: -0.5px;
             color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .logo span {
             background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: background 0.3s ease;
+        }
+
+        body.mode-dogs .logo span {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -88,11 +92,66 @@
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding: 2rem 1.5rem 4rem 1.5rem;
+            padding: 1rem 1.5rem 4rem 1.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             gap: 3.5rem;
+        }
+
+        .toggle-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .toggle-container {
+            background: rgba(17, 24, 39, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.35rem;
+            border-radius: 100px;
+            display: flex;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 100px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            color: #ffffff;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 0.35rem;
+            left: 0.35rem;
+            bottom: 0.35rem;
+            width: calc(50% - 0.35rem);
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            border-radius: 100px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        body.mode-dogs .toggle-slider {
+            transform: translateX(100%);
+            background: linear-gradient(135deg, #d97706, #f59e0b);
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
         }
 
         .counter-section {
@@ -101,12 +160,14 @@
         }
 
         .counter-section h1 {
+            id: label-main-heading;
             font-size: 0.85rem;
             color: #9ca3af;
             text-transform: uppercase;
             letter-spacing: 3px;
             font-weight: 700;
             margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
         }
 
         .counter-wrapper {
@@ -117,7 +178,7 @@
 
         .counter {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3.5rem, 9vw, 6.5rem);
+            font-size: clamp(3.2rem, 9vw, 6.5rem);
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -1px;
@@ -125,7 +186,6 @@
             background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            drop-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .counter-glow {
@@ -138,6 +198,11 @@
             background: radial-gradient(rgba(59, 130, 246, 0.12), transparent 60%);
             z-index: -1;
             pointer-events: none;
+            transition: background 0.3s ease;
+        }
+
+        body.mode-dogs .counter-glow {
+            background: radial-gradient(rgba(245, 158, 11, 0.1), transparent 60%);
         }
 
         .subtitle {
@@ -181,11 +246,14 @@
             width: 100%;
             height: 3px;
             opacity: 0.7;
+            transition: background 0.3s ease;
         }
 
         .stat-card.births::before { background: linear-gradient(90deg, #10b981, transparent); }
         .stat-card.deaths::before { background: linear-gradient(90deg, #ef4444, transparent); }
+        
         .stat-card.growth::before { background: linear-gradient(90deg, #3b82f6, transparent); }
+        body.mode-dogs .stat-card.growth::before { background: linear-gradient(90deg, #f59e0b, transparent); }
 
         .stat-card h3 {
             font-size: 0.8rem;
@@ -201,11 +269,14 @@
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.5px;
+            transition: color 0.3s ease;
         }
 
         .stat-card.births .stat-number { color: #10b981; }
         .stat-card.deaths .stat-number { color: #f87171; }
+        
         .stat-card.growth .stat-number { color: #60a5fa; }
+        body.mode-dogs .stat-card.growth .stat-number { color: #fbbf24; }
 
         .stat-meta {
             font-size: 0.8rem;
@@ -234,73 +305,131 @@
 <body>
 
     <header>
-        <div class="logo">World<span>Population</span></div>
-        <div class="live-indicator"><span class="dot"></span> LIVE DATA</div>
+        <div class="logo">Global<span>Analytics</span></div>
+        <div class="live-indicator"><span class="dot"></span> LIVE METRICS</div>
     </header>
 
     <main class="container">
+        <div class="toggle-wrapper">
+            <div class="toggle-container">
+                <div class="toggle-slider"></div>
+                <button id="btn-humans" class="toggle-btn active" onclick="setMode('humans')">
+                    Humans
+                </button>
+                <button id="btn-dogs" class="toggle-btn" onclick="setMode('dogs')">
+                    Dogs
+                </button>
+            </div>
+        </div>
+
         <section class="counter-section">
-            <h1>Current Global Population Estimate</h1>
+            <h1 id="main-heading">Estimated World Population</h1>
             <div class="counter-wrapper">
                 <div class="counter-glow"></div>
-                <div id="population-counter" class="counter">8,118,500,000</div>
+                <div id="main-counter" class="counter">0</div>
             </div>
-            <p class="subtitle">Living individuals on planet Earth</p>
+            <p id="main-subtitle" class="subtitle">Living individuals on planet Earth</p>
         </section>
 
         <section class="stats-grid">
             <div class="stat-card births">
-                <h3>Births today</h3>
-                <div id="births-today" class="stat-number">0</div>
-                <div class="stat-meta">~4.3 births per second</div>
+                <h3 id="label-births">Births today</h3>
+                <div id="stat-births" class="stat-number">0</div>
+                <div id="meta-births" class="stat-meta">...</div>
             </div>
             <div class="stat-card deaths">
-                <h3>Deaths today</h3>
-                <div id="deaths-today" class="stat-number">0</div>
-                <div class="stat-meta">~1.9 deaths per second</div>
+                <h3 id="label-deaths">Deaths today</h3>
+                <div id="stat-deaths" class="stat-number">0</div>
+                <div id="meta-deaths" class="stat-meta">...</div>
             </div>
             <div class="stat-card growth">
-                <h3>Net population growth</h3>
-                <div id="growth-today" class="stat-number">0</div>
-                <div class="stat-meta">Daily global surplus balance</div>
+                <h3 id="label-growth">Net growth</h3>
+                <div id="stat-growth" class="stat-number">0</div>
+                <div id="meta-growth" class="stat-meta">Daily global surplus balance</div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 World Population Platform. Extrapolated from real-time dynamic UN mathematical variants.</p>
+        <p id="footer-text">&copy; 2026 Platform Tracker. Extrapolated from global linear metrics variants.</p>
     </footer>
 
     <script>
-        const basePopulation = 8118500000; 
-        const birthsPerSecond = 4.3;
-        const deathsPerSecond = 1.9;
+        let currentMode = 'humans';
+
+        const datasets = {
+            humans: {
+                basePopulation: 8118500000,
+                birthsPerSecond: 4.3,
+                deathsPerSecond: 1.9,
+                heading: 'Estimated World Population',
+                subtitle: 'Living individuals on planet Earth',
+                labelBirths: 'Births today',
+                labelDeaths: 'Deaths today',
+                metaBirths: '~4.3 births per second',
+                metaDeaths: '~1.9 deaths per second',
+                footer: '&copy; 2026 World Population Platform. Extrapolated from real-time dynamic UN mathematical variants.'
+            },
+            dogs: {
+                basePopulation: 923000000,
+                birthsPerSecond: 3.8,
+                deathsPerSecond: 1.4,
+                heading: 'Estimated Dog Population',
+                subtitle: 'Canines living worldwide across all environments',
+                labelBirths: 'Puppies born today',
+                labelDeaths: 'Dog deaths today',
+                metaBirths: '~3.8 puppies born per second',
+                metaDeaths: '~1.4 deaths per second',
+                footer: '&copy; 2026 Global Canine Census Framework. Simulated from international veterinary population projections.'
+            }
+        };
+
+        function setMode(mode) {
+            currentMode = mode;
+            
+            document.getElementById('btn-humans').classList.toggle('active', mode === 'humans');
+            document.getElementById('btn-dogs').classList.toggle('active', mode === 'dogs');
+            
+            document.body.className = mode === 'dogs' ? 'mode-dogs' : '';
+            
+            const data = datasets[mode];
+            document.getElementById('main-heading').innerText = data.heading;
+            document.getElementById('main-subtitle').innerText = data.subtitle;
+            document.getElementById('label-births').innerText = data.labelBirths;
+            document.getElementById('label-deaths').innerText = data.labelDeaths;
+            document.getElementById('meta-births').innerText = data.metaBirths;
+            document.getElementById('meta-deaths').innerText = data.metaDeaths;
+            document.getElementById('footer-text').innerHTML = data.footer;
+            
+            updateMetrics();
+        }
 
         function formatNumber(num) {
             return Math.floor(num).toLocaleString('en-US');
         }
 
-        function updatePopulation() {
+        function updateMetrics() {
+            const data = datasets[currentMode];
             const now = new Date();
             const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
             const millisecondsPassedToday = now.getTime() - startOfDay;
             const secondsPassedToday = millisecondsPassedToday / 1000;
 
-            const netGrowthPerSecond = birthsPerSecond - deathsPerSecond;
-            const currentPopulation = basePopulation + (secondsPassedToday * netGrowthPerSecond);
+            const netGrowthPerSecond = data.birthsPerSecond - data.deathsPerSecond;
+            const currentPopulation = data.basePopulation + (secondsPassedToday * netGrowthPerSecond);
             
-            const birthsToday = secondsPassedToday * birthsPerSecond;
-            const deathsToday = secondsPassedToday * deathsPerSecond;
+            const birthsToday = secondsPassedToday * data.birthsPerSecond;
+            const deathsToday = secondsPassedToday * data.deathsPerSecond;
             const growthToday = birthsToday - deathsToday;
 
-            document.getElementById('population-counter').innerText = formatNumber(currentPopulation);
-            document.getElementById('births-today').innerText = formatNumber(birthsToday);
-            document.getElementById('deaths-today').innerText = formatNumber(deathsToday);
-            document.getElementById('growth-today').innerText = formatNumber(growthToday);
+            document.getElementById('main-counter').innerText = formatNumber(currentPopulation);
+            document.getElementById('stat-births').innerText = formatNumber(birthsToday);
+            document.getElementById('stat-deaths').innerText = formatNumber(deathsToday);
+            document.getElementById('stat-growth').innerText = formatNumber(growthToday);
         }
 
-        setInterval(updatePopulation, 100);
-        updatePopulation();
+        setInterval(updateMetrics, 100);
+        setMode('humans');
     </script>
 </body>
 </html>
