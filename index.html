@@ -6,7 +6,7 @@
     <title>Global Metrics Platform — Advanced Analytics Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=Space+Grotesk:wght=400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -20,25 +20,10 @@
             --accent-primary-glow: rgba(59, 130, 246, 0.15);
         }
 
-        body.mode-humans {
-            --accent-primary: #3b82f6;
-            --accent-primary-glow: rgba(59, 130, 246, 0.15);
-        }
-
-        body.mode-dogs {
-            --accent-primary: #f59e0b;
-            --accent-primary-glow: rgba(245, 158, 11, 0.12);
-        }
-
-        body.mode-cats {
-            --accent-primary: #ec4899;
-            --accent-primary-glow: rgba(236, 72, 153, 0.15);
-        }
-
-        body.mode-fishes {
-            --accent-primary: #14b8a6;
-            --accent-primary-glow: rgba(20, 184, 166, 0.15);
-        }
+        body.mode-humans { --accent-primary: #3b82f6; --accent-primary-glow: rgba(59, 130, 246, 0.15); }
+        body.mode-dogs { --accent-primary: #f59e0b; --accent-primary-glow: rgba(245, 158, 11, 0.12); }
+        body.mode-cats { --accent-primary: #ec4899; --accent-primary-glow: rgba(236, 72, 153, 0.15); }
+        body.mode-fishes { --accent-primary: #14b8a6; --accent-primary-glow: rgba(20, 184, 166, 0.15); }
 
         body {
             background-color: #05070f;
@@ -61,6 +46,34 @@
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .ai-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px var(--accent-primary-glow);
+        }
+
+        .ai-btn:hover {
+            color: #ffffff;
+            border-color: var(--accent-primary);
+            background: var(--accent-primary-glow);
+            transform: scale(1.05);
         }
 
         .logo {
@@ -157,7 +170,7 @@
             display: flex;
             position: relative;
             box-shadow: inset 0 1px 2px rgba(255,255,255,0.02), 0 20px 40px rgba(0,0,0,0.4);
-            width: 480px;
+            width: 520px;
             backdrop-filter: blur(10px);
         }
 
@@ -176,9 +189,7 @@
             transition: color 0.3s ease;
         }
 
-        .toggle-btn.active {
-            color: #ffffff;
-        }
+        .toggle-btn.active { color: #ffffff; }
 
         .toggle-slider {
             position: absolute;
@@ -280,17 +291,6 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
 
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top left, rgba(255,255,255,0.02), transparent 70%);
-            pointer-events: none;
-        }
-
         .stat-card-border-track {
             position: absolute;
             top: 0;
@@ -298,7 +298,6 @@
             width: 100%;
             height: 4px;
             opacity: 0.8;
-            transition: background 0.4s ease;
         }
 
         .stat-card.births .stat-card-border-track { background: linear-gradient(90deg, #10b981, transparent 80%); }
@@ -322,9 +321,8 @@
             line-height: 1.1;
         }
 
-        .stat-card.births .stat-number { color: #10b981; text-shadow: 0 0 40px rgba(16, 185, 129, 0.1); }
-        .stat-card.deaths .stat-number { color: #f87171; text-shadow: 0 0 40px rgba(248, 113, 113, 0.1); }
-        .stat-card.growth .stat-number { color: #ffffff; }
+        .stat-card.births .stat-number { color: #10b981; }
+        .stat-card.deaths .stat-number { color: #f87171; }
 
         .stat-meta {
             font-size: 0.8rem;
@@ -333,6 +331,81 @@
             font-weight: 500;
         }
 
+        /* Sidebar AI Config */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 4, 9, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 150;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+
+        .sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .sidebar {
+            position: absolute;
+            top: 0;
+            left: -460px;
+            width: 100%;
+            max-width: 440px;
+            height: 100%;
+            background: #080b13;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 30px 0 60px rgba(0, 0, 0, 0.6);
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .sidebar-overlay.open .sidebar { left: 0; }
+
+        .ai-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ai-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            color: #ffffff;
+        }
+
+        .ai-badge {
+            background: var(--accent-primary-glow);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .ai-content-box {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 1.75rem;
+            flex: 1;
+            overflow-y: auto;
+            line-height: 1.6;
+            color: #d1d5db;
+            font-size: 0.95rem;
+        }
+
+        /* Modals Generic Mod */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -341,8 +414,7 @@
             height: 100%;
             background: rgba(3, 4, 9, 0.85);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            z-index: 100;
+            z-index: 200;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -351,10 +423,7 @@
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
 
         .modal {
             background: #090c15;
@@ -363,28 +432,13 @@
             padding: 2.5rem;
             width: 92%;
             max-width: 440px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
             transform: scale(0.92);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .modal-overlay.open .modal {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .modal-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            font-family: 'Space Grotesk', sans-serif;
-            color: #ffffff;
-        }
+        .modal-overlay.open .modal { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .modal-header h2 { font-size: 1.25rem; font-weight: 600; font-family: 'Space Grotesk', sans-serif; color: #ffffff; }
 
         .close-btn {
             background: rgba(255,255,255,0.02);
@@ -394,7 +448,6 @@
             height: 32px;
             color: #6b7280;
             cursor: pointer;
-            font-size: 1.1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -402,20 +455,8 @@
         }
 
         .close-btn:hover { color: #ffffff; border-color: rgba(255,255,255,0.15); }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .form-group label {
-            font-size: 0.75rem;
-            color: #4b5563;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
+        .form-group { display: flex; flex-direction: column; gap: 0.75rem; }
+        .form-group label { font-size: 0.75rem; color: #4b5563; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
 
         .select-input {
             background: #121622;
@@ -424,20 +465,14 @@
             padding: 1rem 1.25rem;
             border-radius: 16px;
             font-size: 0.95rem;
-            font-weight: 500;
             outline: none;
             cursor: pointer;
-            transition: all 0.3s;
             appearance: none;
             background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
             background-repeat: no-repeat;
             background-position: right 1.25rem center;
             background-size: 16px;
-        }
-
-        .select-input:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            width: 100%;
         }
 
         footer {
@@ -446,7 +481,6 @@
             color: #374151;
             font-size: 0.8rem;
             font-weight: 500;
-            letter-spacing: 0.3px;
             border-top: 1px solid rgba(255, 255, 255, 0.02);
             background: rgba(3, 4, 9, 0.4);
             margin-top: auto;
@@ -459,15 +493,20 @@
             .toggle-slider { display: none; }
             .toggle-btn { flex: 1 1 45%; padding: 0.5rem 0; border-radius: 8px; }
             .toggle-btn.active { background: var(--accent-primary); }
-            .stat-card { padding: 2rem 1.75rem; }
-            .counter { font-size: clamp(2.8rem, 12vw, 4rem); }
+            .counter { font-size: clamp(2.5rem, 10vw, 4rem); }
+            .sidebar { max-width: 100%; left: -100%; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Global<span>Metrics</span></div>
+        <div class="header-left">
+            <button class="ai-btn" onclick="toggleSidebar(true)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
+            </button>
+            <div class="logo">Global<span>Metrics</span></div>
+        </div>
         <div class="header-actions">
             <div id="live-tag" class="live-indicator"><span class="dot"></span> LIVE METRICS</div>
             <button class="settings-btn" onclick="toggleModal(true)">
@@ -480,10 +519,10 @@
         <div class="toggle-wrapper">
             <div class="toggle-container">
                 <div class="toggle-slider"></div>
-                <button id="tab-humans" class="toggle-btn" onclick="setMode('humans')">Humans</button>
-                <button id="tab-dogs" class="toggle-btn" onclick="setMode('dogs')">Dogs</button>
-                <button id="tab-cats" class="toggle-btn" onclick="setMode('cats')">Cats</button>
-                <button id="tab-fishes" class="toggle-btn" onclick="setMode('fishes')">Fishes</button>
+                <button id="tab-humans" class="toggle-btn" onclick="setMode('humans')">...</button>
+                <button id="tab-dogs" class="toggle-btn" onclick="setMode('dogs')">...</button>
+                <button id="tab-cats" class="toggle-btn" onclick="setMode('cats')">...</button>
+                <button id="tab-fishes" class="toggle-btn" onclick="setMode('fishes')">...</button>
             </div>
         </div>
 
@@ -518,6 +557,21 @@
         </section>
     </main>
 
+    <div id="ai-sidebar" class="sidebar-overlay" onclick="toggleSidebar(false)">
+        <div class="sidebar" onclick="event.stopPropagation()">
+            <div class="ai-header">
+                <div class="ai-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 7.54 16.59A4 4 0 0 1 16 22H8a4 4 0 0 1-3.54-3.41A10 10 0 0 1 12 2z"></path></svg>
+                    <span>Advanced AI</span>
+                    <span class="ai-badge">v4.2</span>
+                </div>
+                <button class="close-btn" onclick="toggleSidebar(false)">&times;</button>
+            </div>
+            <div id="ai-content" class="ai-content-box">
+                </div>
+        </div>
+    </div>
+
     <div id="settings-modal" class="modal-overlay" onclick="toggleModal(false)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header">
@@ -531,6 +585,8 @@
                     <option value="pt">Português</option>
                     <option value="es">Español</option>
                     <option value="fr">Français</option>
+                    <option value="ja">日本語</option>
+                    <option value="ru">Русский</option>
                 </select>
             </div>
         </div>
@@ -546,232 +602,120 @@
 
         const translationTable = {
             en: {
-                liveTag: '<span class="dot"></span> LIVE DATA',
-                modalTitle: 'Options',
-                labelLang: 'Select Language',
-                labelGrowth: 'Net Growth',
-                metaGrowth: 'Daily global surplus balance',
-                tabHumans: 'Humans',
-                tabDogs: 'Dogs',
-                tabCats: 'Cats',
-                tabFishes: 'Fishes',
-                langLocale: 'en-US'
+                liveTag: '<span class="dot"></span> LIVE DATA', modalTitle: 'Options', labelLang: 'Select Language',
+                labelGrowth: 'Net Growth', metaGrowth: 'Daily global surplus balance',
+                tabHumans: 'Humans', tabDogs: 'Dogs', tabCats: 'Cats', tabFishes: 'Fishes', langLocale: 'en-US'
             },
             pt: {
-                liveTag: '<span class="dot"></span> DADOS AO VIVO',
-                modalTitle: 'Opções',
-                labelLang: 'Escolher Língua',
-                labelGrowth: 'Crescimento Líquido',
-                metaGrowth: 'Balanço diário do excedente global',
-                tabHumans: 'Humanos',
-                tabDogs: 'Cães',
-                tabCats: 'Gatos',
-                tabFishes: 'Peixes',
-                langLocale: 'pt-BR'
+                liveTag: '<span class="dot"></span> DADOS AO VIVO', modalTitle: 'Opções', labelLang: 'Escolher Língua',
+                labelGrowth: 'Crescimento Líquido', metaGrowth: 'Balanço diário do excedente global',
+                tabHumans: 'Humanos', tabDogs: 'Cães', tabCats: 'Gatos', tabFishes: 'Peixes', langLocale: 'pt-BR'
             },
             es: {
-                liveTag: '<span class="dot"></span> DATOS EN VIVO',
-                modalTitle: 'Opciones',
-                labelLang: 'Seleccionar Idioma',
-                labelGrowth: 'Crecimiento Neto',
-                metaGrowth: 'Balance de excedente global diario',
-                tabHumans: 'Humanos',
-                tabDogs: 'Perros',
-                tabCats: 'Gatos',
-                tabFishes: 'Peces',
-                langLocale: 'es-ES'
+                liveTag: '<span class="dot"></span> DATOS EN VIVO', modalTitle: 'Opciones', labelLang: 'Seleccionar Idioma',
+                labelGrowth: 'Crecimiento Neto', metaGrowth: 'Balance de excedente global diario',
+                tabHumans: 'Humanos', tabDogs: 'Perros', tabCats: 'Gatos', tabFishes: 'Peces', langLocale: 'es-ES'
             },
             fr: {
-                liveTag: '<span class="dot"></span> DONNÉES EN DIRECT',
-                modalTitle: 'Options',
-                labelLang: 'Sélectionner la langue',
-                labelGrowth: 'Croissance Nette',
-                metaGrowth: 'Bilan quotidien de l\'excédent global',
-                tabHumans: 'Humains',
-                tabDogs: 'Chiens',
-                tabCats: 'Chats',
-                tabFishes: 'Poissons',
-                langLocale: 'fr-FR'
+                liveTag: '<span class="dot"></span> DONNÉES EN DIRECT', modalTitle: 'Options', labelLang: 'Sélectionner la langue',
+                labelGrowth: 'Croissance Nette', metaGrowth: 'Bilan quotidien de l\'excédent global',
+                tabHumans: 'Humains', tabDogs: 'Chiens', tabCats: 'Chats', tabFishes: 'Poissons', langLocale: 'fr-FR'
+            },
+            ja: {
+                liveTag: '<span class="dot"></span> ライブデータ', modalTitle: '設定', labelLang: '言語の選択',
+                labelGrowth: '純増減数', metaGrowth: '1日あたりの世界人口過剰バランス',
+                tabHumans: '人間', tabDogs: '犬', tabCats: '猫', tabFishes: '魚類', langLocale: 'ja-JP'
+            },
+            ru: {
+                liveTag: '<span class="dot"></span> ЖИВЫЕ ДАННЫЕ', modalTitle: 'Настройки', labelLang: 'Выберите язык',
+                labelGrowth: 'Чистый прирост', metaGrowth: 'Ежедневный глобальный профицитный баланс',
+                tabHumans: 'Люди', tabDogs: 'Собаки', tabCats: 'Кошки', tabFishes: 'Рыбы', langLocale: 'ru-RU'
             }
         };
 
         const datasets = {
             humans: {
-                basePopulation: 8118500000,
-                birthsPerSecond: 4.3,
-                deathsPerSecond: 1.9,
+                basePopulation: 8118500000, birthsPerSecond: 4.3, deathsPerSecond: 1.9,
                 translations: {
-                    en: {
-                        heading: 'Estimated World Population',
-                        subtitle: 'Living individuals on planet Earth',
-                        labelBirths: 'Births today',
-                        labelDeaths: 'Deaths today',
-                        metaBirths: '~4.3 births per second',
-                        metaDeaths: '~1.9 deaths per second',
-                        footer: '&copy; 2026 World Population Platform. Extrapolated from real-time dynamic UN mathematical variants.'
-                    },
-                    pt: {
-                        heading: 'População Mundial Estimada',
-                        subtitle: 'Indivíduos vivos no planeta Terra',
-                        labelBirths: 'Nascimentos hoje',
-                        labelDeaths: 'Mortes hoje',
-                        metaBirths: '~4.3 nascimentos por segundo',
-                        metaDeaths: '~1.9 mortes por segundo',
-                        footer: '&copy; 2026 Plataforma de População Mundial. Extrapolado de variantes matemáticas dinâmicas em tempo real da ONU.'
-                    },
-                    es: {
-                        heading: 'Población Mundial Estimada',
-                        subtitle: 'Individuos vivos en el planeta Tierra',
-                        labelBirths: 'Nacimientos hoy',
-                        labelDeaths: 'Muertes hoy',
-                        metaBirths: '~4.3 nacimientos por segundo',
-                        metaDeaths: '~1.9 muertes por segundo',
-                        footer: '&copy; 2026 Plataforma de Población Mundial. Extrapolado de variantes matemáticas dinámicas en tempo real de la ONU.'
-                    },
-                    fr: {
-                        heading: 'Population Mondiale Estimée',
-                        subtitle: 'Individus vivants sur la planète Terre',
-                        labelBirths: 'Naissances aujourd\'hui',
-                        labelDeaths: 'Décès aujourd\'hui',
-                        metaBirths: '~4.3 naissances par seconde',
-                        metaDeaths: '~1.9 décès par seconde',
-                        footer: '&copy; 2026 Plateforme de la Population Mondiale. Extrapolé à partir de variantes mathématiques dynamiques de l\'ONU en temps réel.'
-                    }
+                    en: { heading: 'Estimated World Population', subtitle: 'Living individuals on planet Earth', labelBirths: 'Births today', labelDeaths: 'Deaths today', metaBirths: '~4.3 births per second', metaDeaths: '~1.9 deaths per second', footer: '&copy; 2026 World Population Platform.' },
+                    pt: { heading: 'População Mundial Estimada', subtitle: 'Indivíduos vivos no planeta Terra', labelBirths: 'Nascimentos hoje', labelDeaths: 'Mortes hoje', metaBirths: '~4.3 por segundo', metaDeaths: '~1.9 por segundo', footer: '&copy; 2026 Plataforma de População Mundial.' },
+                    es: { heading: 'Población Mundial Estimada', subtitle: 'Individuos vivos en el planeta Tierra', labelBirths: 'Nacimientos hoy', labelDeaths: 'Muertes hoy', metaBirths: '~4.3 por segundo', metaDeaths: '~1.9 por segundo', footer: '&copy; 2026 Plataforma de Población Mundial.' },
+                    fr: { heading: 'Population Mondiale Estimée', subtitle: 'Individus vivants sur la Terre', labelBirths: 'Naissances aujourd\'hui', labelDeaths: 'Décès aujourd\'hui', metaBirths: '~4.3 naissances/s', metaDeaths: '~1.9 décès/s', footer: '&copy; 2026 Plateforme de la Population.' },
+                    ja: { heading: '推定世界総人口', subtitle: '地球上に生存している人類の数', labelBirths: '本日の出生数', labelDeaths: '本日の死亡数', metaBirths: '1秒あたり約4.3人出生', metaDeaths: '1秒あたり約1.9人死亡', footer: '&copy; 2026 世界人口統計プラットフォーム' },
+                    ru: { heading: 'Оценка населения мира', subtitle: 'Живые люди на планете Земля', labelBirths: 'Рождений сегодня', labelDeaths: 'Смертей сегодня', metaBirths: '~4.3 рождений в секунду', metaDeaths: '~1.9 смертей в секунду', footer: '&copy; 2026 Платформа народонаселения мира.' }
+                },
+                aiInsights: {
+                    en: '<strong>Humanity Analysis:</strong> Humans exhibit high localized urban grouping. Population scaling is heavily driven by advanced medical infrastructure and industrialized resource management, yielding an exceptional runtime longevity benchmark compared to alternative organic lifeforms.',
+                    pt: '<strong>Análise da Humanidade:</strong> Humanos exibem agrupamento urbano localizado massivo. O crescimento populacional é impulsionado por infraestrutura médica e gestão de recursos industriais, gerando longevidade excepcional em comparação com outros sistemas orgânicos.',
+                    es: '<strong>Análisis de la Humanidad:</strong> Los humanos muestran una alta concentración urbana. Su crecimiento está ligado a infraestructuras médicas y gestión de recursos industrializados, logrando una longevidade superior frente a otras formas de vida.',
+                    fr: '<strong>Analyse de l\'humanité:</strong> Les humains affichent d\'importants regroupements urbains. La croissance est soutenue par des infrastructures médicales avancées, conférant une longévité systémique exceptionnelle.',
+                    ja: '<strong>人類の分析:</strong> 高度な都市集中型構造を持ちます。医学的インフラと資源管理システムにより、他の有機生命体システムと比較して極めて例外的な平均寿命の長さを維持しています。',
+                    ru: '<strong>Анализ человечества:</strong> Человечество демонстрирует высокую плотность урбанизации. Рост поддерживается развитой медициной и распределением ресурсов, что дает высокую продолжительность жизни.'
                 }
             },
             dogs: {
-                basePopulation: 923000000,
-                birthsPerSecond: 3.8,
-                deathsPerSecond: 1.4,
+                basePopulation: 923000000, birthsPerSecond: 3.8, deathsPerSecond: 1.4,
                 translations: {
-                    en: {
-                        heading: 'Estimated Dog Population',
-                        subtitle: 'Canines living worldwide across all environments',
-                        labelBirths: 'Puppies born today',
-                        labelDeaths: 'Dog deaths today',
-                        metaBirths: '~3.8 puppies born per second',
-                        metaDeaths: '~1.4 deaths per second',
-                        footer: '&copy; 2026 Global Canine Census Framework. Simulated from international veterinary population projections.'
-                    },
-                    pt: {
-                        heading: 'População Estimada de Cães',
-                        subtitle: 'Caninos vivendo globalmente em todos os ambientes',
-                        labelBirths: 'Filhotes nascidos hoje',
-                        labelDeaths: 'Mortes de cães hoje',
-                        metaBirths: '~3.8 filhotes por segundo',
-                        metaDeaths: '~1.4 mortes por segundo',
-                        footer: '&copy; 2026 Censo Canino Global. Simulado através de projeções demográficas veterinárias internacionais.'
-                    },
-                    es: {
-                        heading: 'Población Estimada de Perros',
-                        subtitle: 'Caninos que viven en todo el mundo en todos los entornos',
-                        labelBirths: 'Cachorros nacidos hoy',
-                        labelDeaths: 'Muertes de perros hoy',
-                        metaBirths: '~3.8 cachorros por segundo',
-                        metaDeaths: '~1.4 muertes por segundo',
-                        footer: '&copy; 2026 Marco del Censo Canino Global. Simulado a partir de proyecciones demográficas veterinarias internacionales.'
-                    },
-                    fr: {
-                        heading: 'Population Estimée de Chiens',
-                        subtitle: 'Canidés vivant dans le monde entier dans tous les environnements',
-                        labelBirths: 'Chiot naissances aujourd\'hui',
-                        labelDeaths: 'Décès de chiens aujourd\'hui',
-                        metaBirths: '~3.8 chiots par seconde',
-                        metaDeaths: '~1.4 décès par seconde',
-                        footer: '&copy; 2026 Cadre mondial du recensement canin. Simulé à partir de projections démographiques vétérinaires internationales.'
-                    }
+                    en: { heading: 'Estimated Dog Population', subtitle: 'Canines living worldwide across all environments', labelBirths: 'Puppies born today', labelDeaths: 'Dog deaths today', metaBirths: '~3.8 puppies/s', metaDeaths: '~1.4 deaths/s', footer: '&copy; 2026 Canine Census Framework.' },
+                    pt: { heading: 'População Estimada de Cães', subtitle: 'Caninos vivendo globalmente em todos os ambientes', labelBirths: 'Filhotes nascidos hoje', labelDeaths: 'Mortes de cães hoje', metaBirths: '~3.8 filhotes/s', metaDeaths: '~1.4 mortes/s', footer: '&copy; 2026 Censo Canino Global.' },
+                    es: { heading: 'Población Estimada de Perros', subtitle: 'Caninos en entornos globales', labelBirths: 'Cachorros nacidos hoy', labelDeaths: 'Muertes de perros hoy', metaBirths: '~3.8 por segundo', metaDeaths: '~1.4 por segundo', footer: '&copy; 2026 Censo Canino Global.' },
+                    fr: { heading: 'Population Estimée de Chiens', subtitle: 'Canidés vivant dans le monde', labelBirths: 'Chiots nés aujourd\'hui', labelDeaths: 'Décès de chiens', metaBirths: '~3.8 chiots/s', metaDeaths: '~1.4 décès/s', footer: '&copy; 2026 Recensement Canin.' },
+                    ja: { heading: '推定犬の総人口', subtitle: '世界各地の環境に暮らす犬の数', labelBirths: '本日の子犬出生数', labelDeaths: '本日の犬の死亡数', metaBirths: '1秒あたり約3.8匹出生', metaDeaths: '1秒あたり約1.4匹死亡', footer: '&copy; 2026 全世界犬類国勢調査フレームワーク' },
+                    ru: { heading: 'Оценка популяции собак', subtitle: 'Каниды, живущие во всех экосистемах мира', labelBirths: 'Щенков родилось сегодня', labelDeaths: 'Смертей собак сегодня', metaBirths: '~3.8 щенков в секунду', metaDeaths: '~1.4 смертей в секунду', footer: '&copy; 2026 Глобальный реестр канид.' }
+                },
+                aiInsights: {
+                    en: '<strong>Canine Analysis:</strong> Co-evolution behaviors link their population dynamic directly to human socio-economic clusters. High behavioral adaptability permits widespread saturation across varied atmospheric and structural environments.',
+                    pt: '<strong>Análise Canina:</strong> A coevolução atrela sua dinâmica populacional aos aglomerados socioeconômicos humanos. Alta flexibilidade adaptativa permite saturação mista em diversas zonas estruturais.',
+                    es: '<strong>Análisis Canino:</strong> La coevolución vincula su crecimiento directamente con los núcleos humanos. Su adaptabilidad conductual les permite saturar casi cualquier zona geográfica.',
+                    fr: '<strong>Analyse Canine:</strong> La coévolution lie directement leur courbe démographique aux foyers humains. Une plasticité comportementale optimale garantit une large distribution globale.',
+                    ja: '<strong>犬類の分析:</strong> 人類の経済活動領域と共生関係にあります。優れた行動適応能力により、多様な気候帯や人工的構造環境において安定したサチュレーションを保っています。',
+                    ru: '<strong>Анализ собак:</strong> Эволюция связывает их популяцию напрямую с человеческими ресурсами. Поведенческая гибкость позволяет им процветать в любых географических зонах.'
                 }
             },
             cats: {
-                basePopulation: 956000000,
-                birthsPerSecond: 4.1,
-                deathsPerSecond: 1.5,
+                basePopulation: 956000000, birthsPerSecond: 4.1, deathsPerSecond: 1.5,
                 translations: {
-                    en: {
-                        heading: 'Estimated Cat Population',
-                        subtitle: 'Felines domesticated and free-roaming globally',
-                        labelBirths: 'Kittens born today',
-                        labelDeaths: 'Cat deaths today',
-                        metaBirths: '~4.1 kittens born per second',
-                        metaDeaths: '~1.5 deaths per second',
-                        footer: '&copy; 2026 Global Feline Database. Modeled from world ecological and household survey patterns.'
-                    },
-                    pt: {
-                        heading: 'População Estimada de Gatos',
-                        subtitle: 'Felinos domesticados e errantes globalmente',
-                        labelBirths: 'Gatinhos nascidos hoje',
-                        labelDeaths: 'Mortes de gatos hoje',
-                        metaBirths: '~4.1 gatinhos nascidos por segundo',
-                        metaDeaths: '~1.5 mortes por segundo',
-                        footer: '&copy; 2026 Banco de Dados Felino Global. Modelado a partir de padrões de pesquisas ecológicas e domiciliares.'
-                    },
-                    es: {
-                        heading: 'Población Estimada de Gatos',
-                        subtitle: 'Felinos domesticados y callejeros a nivel global',
-                        labelBirths: 'Gatitos nacidos hoy',
-                        labelDeaths: 'Muertes de gatos hoy',
-                        metaBirths: '~4.1 gatitos por segundo',
-                        metaDeaths: '~1.4 muertes por segundo',
-                        footer: '&copy; 2026 Base de Datos Global Felina. Modelado a partir de patrones de encuestas ecológicas y de hogares del mundo.'
-                    },
-                    fr: {
-                        heading: 'Population Estimée de Chats',
-                        subtitle: 'Félins domestiques et errants à l\'échelle mondiale',
-                        labelBirths: 'Chatons nés aujourd\'hui',
-                        labelDeaths: 'Décès de chats aujourd\'hui',
-                        metaBirths: '~4.1 chatons par seconde',
-                        metaDeaths: '~1.5 décès par seconde',
-                        footer: '&copy; 2026 Base de données mondiale sur les félins. Modélisé à partir de profils d\'enquêtes écologiques mondiales.'
-                    }
+                    en: { heading: 'Estimated Cat Population', subtitle: 'Felines domesticated and free-roaming globally', labelBirths: 'Kittens born today', labelDeaths: 'Cat deaths today', metaBirths:saveNumber = '~4.1 kittens/s', metaBirths: '~4.1 kittens/s', metaDeaths: '~1.5 deaths/s', footer: '&copy; 2026 Feline Database.' },
+                    pt: { heading: 'População Estimada de Gatos', subtitle: 'Felinos domesticados e errantes globalmente', labelBirths: 'Gatinhos nascidos hoje', labelDeaths: 'Mortes de gatos hoje', metaBirths: '~4.1 gatinhos/s', metaDeaths: '~1.5 mortes/s', footer: '&copy; 2026 Banco Felino Global.' },
+                    es: { heading: 'Población Estimada de Gatos', subtitle: 'Felinos domésticos y callejeros', labelBirths: 'Gatitos nacidos hoy', labelDeaths: 'Muertes de gatos hoy', metaBirths: '~4.1 por segundo', metaDeaths: '~1.5 por segundo', footer: '&copy; 2026 Base Felina Global.' },
+                    fr: { heading: 'Population Estimée de Chats', subtitle: 'Félins domestiques et errants', labelBirths: 'Chatons nés aujourd\'hui', labelDeaths: 'Décès de chats', metaBirths: '~4.1 chatons/s', metaDeaths: '~1.5 décès/s', footer: '&copy; 2026 Base Félines.' },
+                    ja: { heading: '推定猫の総人口', subtitle: '家庭飼育および世界中の野良猫の総数', labelBirths: '本日生まれの仔猫', labelDeaths: '本日の猫の死亡数', metaBirths: '1秒あたり約4.1匹出生', metaDeaths: '1秒あたり約1.5匹死亡', footer: '&copy; 2026 世界猫類データベースシステム' },
+                    ru: { heading: 'Оценка популяции кошек', subtitle: 'Домашние и бродячие кошачьи по всему миру', labelBirths: 'Котят родилось сегодня', labelDeaths: 'Смертей кошек сегодня', metaBirths: '~4.1 котят в секунду', metaDeaths: '~1.5 смертей в секунду', footer: '&copy; 2026 Глобальная база данных кошачьих.' }
+                },
+                aiInsights: {
+                    en: '<strong>Feline Analysis:</strong> Felines feature high efficient solitary and micro-colony hunting operations. Their reproductive algorithms demonstrate exceptional expansion indexes when ecological barriers are unmonitored.',
+                    pt: '<strong>Análise Felina:</strong> Felinos exibem dinâmicas de caça solitária e microcolônias eficientes. Seus algoritmos reprodutivos mostram alta expansão quando barreiras ecológicas locais não são monitoradas.',
+                    es: '<strong>Análisis Felino:</strong> Poseen tácticas eficientes en microcolonias. Sus vectores reproductivos demuestran una expansión masiva en ausencia de controles ecológicos severos.',
+                    fr: '<strong>Analyse Félines:</strong> Chasseurs solitaires ou en micro-colonies redoutables. Les indices de reproduction explosent dès que la surveillance écosystémique s\'assouplit.',
+                    ja: '<strong>猫類の分析:</strong> 単独またはマイクロコロニーによる効率的な捕食行動を行います。繁殖アルゴリズムの拡大効率が非常に高く、環境的抑制がないエリアでは急激な増加傾向を示します。',
+                    ru: '<strong>Анализ кошачьих:</strong> Эффективные хищники-одиночки. Их репродуктивный алгоритм демонстрирует взрывной рост при ослаблении эко-контроля.'
                 }
             },
             fishes: {
-                basePopulation: 3500000000000,
-                birthsPerSecond: 125000,
-                deathsPerSecond: 124500,
+                basePopulation: 3500000000000, birthsPerSecond: 125000, deathsPerSecond: 124500,
                 translations: {
-                    en: {
-                        heading: 'Estimated Wild Fish Population',
-                        subtitle: 'Marine and freshwater fish active in world waters',
-                        labelBirths: 'Fish spawned today',
-                        labelDeaths: 'Natural & biomass losses today',
-                        metaBirths: '~125,000 fry hatched per second',
-                        metaDeaths: '~124,500 losses per second',
-                        footer: '&copy; 2026 Oceanographic Biomass Monitor. Extrapolated from global marine ecosystem density coefficients.'
-                    },
-                    pt: {
-                        heading: 'População Estimada de Peixes Selvagens',
-                        subtitle: 'Peixes marinhos e de água doce ativos nas águas mundiais',
-                        labelBirths: 'Alevinos gerados hoje',
-                        labelDeaths: 'Perdas naturais e pescas hoje',
-                        metaBirths: '~125.000 larvas por segundo',
-                        metaDeaths: '~124.500 perdas por segundo',
-                        footer: '&copy; 2026 Monitor de Biomassa Oceanográfica. Extrapolado a partir de coeficientes globais de densidade ecossistêmica.'
-                    },
-                    es: {
-                        heading: 'Población Estimada de Peces Silvestres',
-                        subtitle: 'Peces marinos y de agua dulce activos en aguas mundiales',
-                        labelBirths: 'Alevines nacidos hoy',
-                        labelDeaths: 'Pérdidas naturales y capturas hoy',
-                        metaBirths: '~125.000 alevines por segundo',
-                        metaDeaths: '~124.500 pérdidas por segundo',
-                        footer: '&copy; 2026 Monitor de Biomasa Oceanográfica. Extrapolado de coeficientes globales de densidad de ecosistemas marinos.'
-                    },
-                    fr: {
-                        heading: 'Population Estimée de Poissons Sauvages',
-                        subtitle: 'Poissons marins et d\'eau douce actifs dans le monde',
-                        labelBirths: 'Alvins éclos aujourd\'hui',
-                        labelDeaths: 'Pertes naturelles et pêches aujourd\'hui',
-                        metaBirths: '~125 000 alvins par seconde',
-                        metaDeaths: '~124 500 pertes par seconde',
-                        footer: '&copy; 2026 Moniteur de biomasse océanographique. Extrapolé à partir des coefficients de densité des écosystèmes.'
-                    }
+                    en: { heading: 'Estimated Wild Fish Population', subtitle: 'Marine and freshwater fish active in world waters', labelBirths: 'Fish spawned today', labelDeaths: 'Natural & biomass losses', metaBirths: '~125,000 fry/s', metaDeaths: '~124,500 losses/s', footer: '&copy; 2026 Biomass Monitor.' },
+                    pt: { heading: 'População Estimada de Peixes Selvagens', subtitle: 'Peixes marinhos e de água doce nas águas mundiais', labelBirths: 'Alevinos gerados hoje', labelDeaths: 'Perdas naturais e pescas', metaBirths: '~125.000 larvas/s', metaDeaths: '~124.500 perdas/s', footer: '&copy; 2026 Monitor de Biomassa.' },
+                    es: { heading: 'Población Estimada de Peces', subtitle: 'Peces marinos y continentales activos', labelBirths: 'Alevines nacidos hoy', labelDeaths: 'Pérdidas de biomasa', metaBirths: '~125.000/s', metaDeaths: '~124.500/s', footer: '&copy; 2026 Monitor de Biomasa Oceanográfica.' },
+                    fr: { heading: 'Population de Poissons Sauvages', subtitle: 'Poissons marins et d\'eau douce actifs', labelBirths: 'Alvins éclos aujourd\'hui', labelDeaths: 'Pertes de biomasse', metaBirths: '~125k alvins/s', metaDeaths: '~124.5k pertes/s', footer: '&copy; 2026 Moniteur de Biomasse Océanique.' },
+                    ja: { heading: '推定野生魚類の総数', subtitle: '地球上の海洋および淡水域に生息する全魚類', labelBirths: '本日孵化した稚魚', labelDeaths: '自然死および漁獲捕獲数', metaBirths: '1秒あたり約125,000匹孵化', metaDeaths: '1秒あたり約124,500匹減少', footer: '&copy; 2026 海洋資源バイオマスモニター' },
+                    ru: { heading: 'Оценка популяции диких рыб', subtitle: 'Морские и пресноводные рыбы в гидросфере', labelBirths: 'Мальков вылупилось сегодня', labelDeaths: 'Естественные потери и вылов', metaBirths: '~125 000 мальков в секунду', metaDeaths: '~124 500 потерь в секунду', footer: '&copy; 2026 Мониторинг океанической биомассы.' }
+                },
+                aiInsights: {
+                    en: '<strong>Oceanic Biomass Analysis:</strong> Massive localized spawns yield volatile, extreme scaling metrics. Subterranean and maritime ecosystems represent 70%+ of organic engine operations on Earth, heavily exposed to industrial harvesting models.',
+                    pt: '<strong>Análise de Biomassa Oceanográfica:</strong> Desovas massivas geram métricas de alta volatilidade. Os ecossistemas aquáticos gerenciam mais de 70% do mecanismo orgânico do planeta.',
+                    es: '<strong>Análisis de Biomasa Marina:</strong> Desoves masivos producen fluctuaciones extremas. El motor acuático comprende más del 70% de la actividad orgánica planetaria global.',
+                    fr: '<strong>Analyse Biomasse Océanique:</strong> Les pontes massives provoquent des pics de croissance extrêmes. Le moteur marin gère plus de 70% des cycles organiques de la biosphère.',
+                    ja: '<strong>海洋バイオマスの分析:</strong> 大規模な産卵により非常に極端な増減数を示します。地球上の全有機生命体サイクルの70%以上を占めており、環境変動の影響を最もダイレクトに受けます。',
+                    ru: '<strong>Анализ гидробионотов:</strong> Массовый нерест вызывает колоссальные колебания численности. Водные экосистемы составляют более 70% всего органического движка планеты.'
                 }
             }
         };
 
-        function toggleModal(open) {
-            document.getElementById('settings-modal').classList.toggle('open', open);
+        function toggleModal(open) { document.getElementById('settings-modal').classList.toggle('open', open); }
+        function toggleSidebar(open) { 
+            document.getElementById('ai-sidebar').classList.toggle('open', open); 
+            if(open) { renderAiContent(); }
         }
 
         function setLanguage(lang) {
@@ -790,11 +734,11 @@
             document.getElementById('tab-fishes').innerText = ui.tabFishes;
 
             renderTextContent();
+            if (document.getElementById('ai-sidebar').classList.contains('open')) { renderAiContent(); }
         }
 
         function setMode(mode) {
             currentMode = mode;
-            
             document.getElementById('tab-humans').classList.toggle('active', mode === 'humans');
             document.getElementById('tab-dogs').classList.toggle('active', mode === 'dogs');
             document.getElementById('tab-cats').classList.toggle('active', mode === 'cats');
@@ -802,11 +746,16 @@
             
             document.body.className = `mode-${mode}`;
             renderTextContent();
+            if (document.getElementById('ai-sidebar').classList.contains('open')) { renderAiContent(); }
+        }
+
+        function renderAiContent() {
+            const aiText = datasets[currentMode].aiInsights[currentLang];
+            document.getElementById('ai-content').innerHTML = aiText;
         }
 
         function renderTextContent() {
             const data = datasets[currentMode].translations[currentLang];
-            
             document.getElementById('main-heading').innerText = data.heading;
             document.getElementById('main-subtitle').innerText = data.subtitle;
             document.getElementById('label-births').innerText = data.labelBirths;
@@ -814,7 +763,6 @@
             document.getElementById('meta-births').innerText = data.metaBirths;
             document.getElementById('meta-deaths').innerText = data.metaDeaths;
             document.getElementById('footer-text').innerHTML = data.footer;
-            
             updateMetrics();
         }
 
@@ -827,8 +775,7 @@
             const data = datasets[currentMode];
             const now = new Date();
             const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-            const millisecondsPassedToday = now.getTime() - startOfDay;
-            const secondsPassedToday = millisecondsPassedToday / 1000;
+            const secondsPassedToday = (now.getTime() - startOfDay) / 1000;
 
             const netGrowthPerSecond = data.birthsPerSecond - data.deathsPerSecond;
             const currentPopulation = data.basePopulation + (secondsPassedToday * netGrowthPerSecond);
