@@ -16,26 +16,53 @@
         }
 
         :root {
+            --bg-main: #05070f;
+            --bg-card: rgba(11, 15, 28, 0.4);
+            --bg-card-hover: rgba(15, 20, 38, 0.5);
+            --bg-panel: #080b13;
+            --bg-input: #121622;
+            --text-main: #ffffff;
+            --text-muted: #6b7280;
+            --text-body: #d1d5db;
+            --border-alpha: rgba(255, 255, 255, 0.03);
+            --border-alpha-heavy: rgba(255, 255, 255, 0.06);
             --accent-primary: #3b82f6;
             --accent-primary-glow: rgba(59, 130, 246, 0.15);
+            --shadow-intensity: rgba(0, 0, 0, 0.6);
         }
 
-        body.mode-humans { --accent-primary: #3b82f6; --accent-primary-glow: rgba(59, 130, 246, 0.15); }
-        body.mode-dogs { --accent-primary: #f59e0b; --accent-primary-glow: rgba(245, 158, 11, 0.12); }
-        body.mode-cats { --accent-primary: #ec4899; --accent-primary-glow: rgba(236, 72, 153, 0.15); }
-        body.mode-fishes { --accent-primary: #14b8a6; --accent-primary-glow: rgba(20, 184, 166, 0.15); }
+        [data-theme="light"] {
+            --bg-main: #f4f6fa;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-card-hover: rgba(255, 255, 255, 0.9);
+            --bg-panel: #ffffff;
+            --bg-input: #f1f3f7;
+            --text-main: #0f172a;
+            --text-muted: #94a3b8;
+            --text-body: #334155;
+            --border-alpha: rgba(15, 23, 42, 0.04);
+            --border-alpha-heavy: rgba(15, 23, 42, 0.08);
+            --accent-primary-glow: rgba(59, 130, 246, 0.2);
+            --shadow-intensity: rgba(15, 23, 42, 0.08);
+        }
+
+        body.mode-humans { --accent-primary: #3b82f6; [data-theme="dark"] & { --accent-primary-glow: rgba(59, 130, 246, 0.15); } }
+        body.mode-dogs { --accent-primary: #f59e0b; [data-theme="dark"] & { --accent-primary-glow: rgba(245, 158, 11, 0.12); } }
+        body.mode-cats { --accent-primary: #ec4899; [data-theme="dark"] & { --accent-primary-glow: rgba(236, 72, 153, 0.15); } }
+        body.mode-rats { --accent-primary: #8b5cf6; [data-theme="dark"] & { --accent-primary-glow: rgba(139, 92, 246, 0.15); } }
+        body.mode-fishes { --accent-primary: #14b8a6; [data-theme="dark"] & { --accent-primary-glow: rgba(20, 184, 166, 0.15); } }
 
         body {
-            background-color: #05070f;
+            background-color: var(--bg-main);
             background-image: 
                 radial-gradient(at 0% 0%, var(--accent-primary-glow) 0px, transparent 40%),
                 radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.04) 0px, transparent 45%);
-            color: #f3f4f6;
+            color: var(--text-body);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
-            transition: background 0.5s ease;
+            transition: background 0.5s ease, color 0.3s ease;
         }
 
         header {
@@ -55,8 +82,8 @@
         }
 
         .ai-btn {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--bg-card);
+            border: 1px solid var(--border-alpha-heavy);
             border-radius: 50%;
             width: 44px;
             height: 44px;
@@ -70,7 +97,7 @@
         }
 
         .ai-btn:hover {
-            color: #ffffff;
+            color: var(--text-main);
             border-color: var(--accent-primary);
             background: var(--accent-primary-glow);
             transform: scale(1.05);
@@ -81,7 +108,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: -0.75px;
-            color: #ffffff;
+            color: var(--text-main);
         }
 
         .logo span {
@@ -125,13 +152,13 @@
         }
 
         .settings-btn {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--bg-card);
+            border: 1px solid var(--border-alpha-heavy);
             border-radius: 50%;
             width: 40px;
             height: 40px;
             cursor: pointer;
-            color: #9ca3af;
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -139,15 +166,14 @@
         }
 
         .settings-btn:hover {
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border-color: var(--accent-primary);
             transform: rotate(45deg);
         }
 
         .container {
             flex: 1;
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             margin: 0 auto;
             padding: 0 1.5rem 5rem 1.5rem;
@@ -163,21 +189,21 @@
         }
 
         .toggle-container {
-            background: rgba(10, 12, 22, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            background: var(--bg-card);
+            border: 1px solid var(--border-alpha-heavy);
             padding: 0.4rem;
             border-radius: 100px;
             display: flex;
             position: relative;
-            box-shadow: inset 0 1px 2px rgba(255,255,255,0.02), 0 20px 40px rgba(0,0,0,0.4);
-            width: 520px;
+            box-shadow: 0 20px 40px var(--shadow-intensity);
+            width: 640px;
             backdrop-filter: blur(10px);
         }
 
         .toggle-btn {
             background: transparent;
             border: none;
-            color: #6b7280;
+            color: var(--text-muted);
             flex: 1;
             padding: 0.7rem 0;
             font-size: 0.85rem;
@@ -189,25 +215,27 @@
             transition: color 0.3s ease;
         }
 
-        .toggle-btn.active { color: #ffffff; }
+        .toggle-btn.active { color: #ffffff !important; }
+        [data-theme="light"] .toggle-btn.active { color: #ffffff !important; }
 
         .toggle-slider {
             position: absolute;
             top: 0.4rem;
             left: 0.4rem;
             bottom: 0.4rem;
-            width: calc(25% - 0.5rem);
+            width: calc(20% - 0.5rem);
             background: var(--accent-primary);
             border-radius: 100px;
             transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.4s ease;
             z-index: 1;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         body.mode-humans .toggle-slider { transform: translateX(0%); }
         body.mode-dogs .toggle-slider { transform: translateX(100%); }
         body.mode-cats .toggle-slider { transform: translateX(200%); }
-        body.mode-fishes .toggle-slider { transform: translateX(300%); }
+        body.mode-rats .toggle-slider { transform: translateX(300%); }
+        body.mode-fishes .toggle-slider { transform: translateX(400%); }
 
         .counter-section {
             text-align: center;
@@ -216,7 +244,7 @@
 
         .counter-section h1 {
             font-size: 0.75rem;
-            color: #6b7280;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 4px;
             font-weight: 700;
@@ -231,12 +259,12 @@
 
         .counter {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(3.5rem, 10vw, 7.5rem);
+            font-size: clamp(3.5rem, 9vw, 7.5rem);
             font-weight: 500;
-            color: #ffffff;
+            color: var(--text-main);
             letter-spacing: -2px;
             line-height: 0.95;
-            background: linear-gradient(180deg, #ffffff 30%, rgba(255,255,255,0.7) 100%);
+            background: linear-gradient(180deg, var(--text-main) 30%, var(--text-muted) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -256,7 +284,7 @@
         }
 
         .subtitle {
-            color: #9ca3af;
+            color: var(--text-muted);
             font-size: 1.1rem;
             font-weight: 400;
             margin-top: 1.5rem;
@@ -270,10 +298,10 @@
         }
 
         .stat-card {
-            background: rgba(11, 15, 28, 0.4);
+            background: var(--bg-card);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-alpha);
             border-radius: 32px;
             padding: 2.5rem 2.25rem;
             display: flex;
@@ -282,13 +310,14 @@
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 10px 30px var(--shadow-intensity);
         }
 
         .stat-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.08);
-            background: rgba(15, 20, 38, 0.5);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            border-color: var(--border-alpha-heavy);
+            background: var(--bg-card-hover);
+            box-shadow: 0 30px 60px var(--shadow-intensity);
         }
 
         .stat-card-border-track {
@@ -306,7 +335,7 @@
 
         .stat-card h3 {
             font-size: 0.75rem;
-            color: #6b7280;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 700;
@@ -316,7 +345,7 @@
             font-family: 'Space Grotesk', sans-serif;
             font-size: 2.75rem;
             font-weight: 500;
-            color: #ffffff;
+            color: var(--text-main);
             letter-spacing: -1px;
             line-height: 1.1;
         }
@@ -326,7 +355,7 @@
 
         .stat-meta {
             font-size: 0.8rem;
-            color: #4b5563;
+            color: var(--text-muted);
             margin-top: auto;
             font-weight: 500;
         }
@@ -355,9 +384,9 @@
             width: 100%;
             max-width: 440px;
             height: 100%;
-            background: #080b13;
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 30px 0 60px rgba(0, 0, 0, 0.6);
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border-alpha-heavy);
+            box-shadow: 30px 0 60px var(--shadow-intensity);
             padding: 3rem 2.5rem;
             display: flex;
             flex-direction: column;
@@ -379,7 +408,7 @@
             gap: 0.75rem;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.25rem;
-            color: #ffffff;
+            color: var(--text-main);
         }
 
         .ai-badge {
@@ -394,15 +423,19 @@
         }
 
         .ai-content-box {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: var(--bg-card);
+            border: 1px solid var(--border-alpha);
             border-radius: 24px;
             padding: 1.75rem;
             flex: 1;
             overflow-y: auto;
             line-height: 1.6;
-            color: #d1d5db;
+            color: var(--text-body);
             font-size: 0.95rem;
+        }
+
+        .ai-content-box p {
+            margin-bottom: 1rem;
         }
 
         /* Modals Generic Mod */
@@ -412,7 +445,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(3, 4, 9, 0.85);
+            background: rgba(3, 4, 9, 0.6);
             backdrop-filter: blur(16px);
             z-index: 200;
             display: flex;
@@ -426,27 +459,28 @@
         .modal-overlay.open { opacity: 1; pointer-events: auto; }
 
         .modal {
-            background: #090c15;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: var(--bg-panel);
+            border: 1px solid var(--border-alpha-heavy);
             border-radius: 36px;
             padding: 2.5rem;
             width: 92%;
             max-width: 440px;
             transform: scale(0.92);
             transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 30px 60px var(--shadow-intensity);
         }
 
         .modal-overlay.open .modal { transform: scale(1); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .modal-header h2 { font-size: 1.25rem; font-weight: 600; font-family: 'Space Grotesk', sans-serif; color: #ffffff; }
+        .modal-header h2 { font-size: 1.25rem; font-weight: 600; font-family: 'Space Grotesk', sans-serif; color: var(--text-main); }
 
         .close-btn {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: var(--bg-card);
+            border: 1px solid var(--border-alpha-heavy);
             border-radius: 50%;
             width: 32px;
             height: 32px;
-            color: #6b7280;
+            color: var(--text-muted);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -454,14 +488,14 @@
             transition: all 0.2s;
         }
 
-        .close-btn:hover { color: #ffffff; border-color: rgba(255,255,255,0.15); }
-        .form-group { display: flex; flex-direction: column; gap: 0.75rem; }
-        .form-group label { font-size: 0.75rem; color: #4b5563; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+        .close-btn:hover { color: var(--text-main); border-color: var(--accent-primary); }
+        .form-group { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .form-group label { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
 
         .select-input {
-            background: #121622;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: #ffffff;
+            background: var(--bg-input);
+            border: 1px solid var(--border-alpha-heavy);
+            color: var(--text-main);
             padding: 1rem 1.25rem;
             border-radius: 16px;
             font-size: 0.95rem;
@@ -478,27 +512,27 @@
         footer {
             text-align: center;
             padding: 3rem 2rem;
-            color: #374151;
+            color: var(--text-muted);
             font-size: 0.8rem;
             font-weight: 500;
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
-            background: rgba(3, 4, 9, 0.4);
+            border-top: 1px solid var(--border-alpha);
+            background: rgba(3, 4, 9, 0.1);
             margin-top: auto;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             header { padding: 2rem 1.5rem; }
             .container { padding: 0 1.25rem 4rem 1.25rem; gap: 3.5rem; }
-            .toggle-container { width: 100%; max-width: 360px; flex-wrap: wrap; border-radius: 24px; }
+            .toggle-container { width: 100%; max-width: 480px; flex-wrap: wrap; border-radius: 24px; }
             .toggle-slider { display: none; }
-            .toggle-btn { flex: 1 1 45%; padding: 0.5rem 0; border-radius: 8px; }
+            .toggle-btn { flex: 1 1 30%; padding: 0.6rem 0; border-radius: 8px; font-size: 0.8rem; }
             .toggle-btn.active { background: var(--accent-primary); }
-            .counter { font-size: clamp(2.5rem, 10vw, 4rem); }
+            .counter { font-size: clamp(2.3rem, 8vw, 4rem); }
             .sidebar { max-width: 100%; left: -100%; }
         }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
     <header>
         <div class="header-left">
@@ -522,6 +556,7 @@
                 <button id="tab-humans" class="toggle-btn" onclick="setMode('humans')">...</button>
                 <button id="tab-dogs" class="toggle-btn" onclick="setMode('dogs')">...</button>
                 <button id="tab-cats" class="toggle-btn" onclick="setMode('cats')">...</button>
+                <button id="tab-rats" class="toggle-btn" onclick="setMode('rats')">...</button>
                 <button id="tab-fishes" class="toggle-btn" onclick="setMode('fishes')">...</button>
             </div>
         </div>
@@ -557,21 +592,24 @@
         </section>
     </main>
 
+    <!-- Sidebar AI Component -->
     <div id="ai-sidebar" class="sidebar-overlay" onclick="toggleSidebar(false)">
         <div class="sidebar" onclick="event.stopPropagation()">
             <div class="ai-header">
                 <div class="ai-title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 7.54 16.59A4 4 0 0 1 16 22H8a4 4 0 0 1-3.54-3.41A10 10 0 0 1 12 2z"></path></svg>
-                    <span>Advanced AI</span>
-                    <span class="ai-badge">v4.2</span>
+                    <span id="ai-title-text">AI Consultant</span>
+                    <span class="ai-badge">v5.0</span>
                 </div>
                 <button class="close-btn" onclick="toggleSidebar(false)">&times;</button>
             </div>
             <div id="ai-content" class="ai-content-box">
-                </div>
+                <!-- Text sets dynamically via JS -->
+            </div>
         </div>
     </div>
 
+    <!-- Settings Modal -->
     <div id="settings-modal" class="modal-overlay" onclick="toggleModal(false)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header">
@@ -589,6 +627,13 @@
                     <option value="ru">Русский</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label id="label-theme">Interface Theme</label>
+                <select class="select-input" onchange="setTheme(this.value)">
+                    <option value="dark">Dark Theme</option>
+                    <option value="light">Light Theme</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -602,34 +647,34 @@
 
         const translationTable = {
             en: {
-                liveTag: '<span class="dot"></span> LIVE DATA', modalTitle: 'Options', labelLang: 'Select Language',
-                labelGrowth: 'Net Growth', metaGrowth: 'Daily global surplus balance',
-                tabHumans: 'Humans', tabDogs: 'Dogs', tabCats: 'Cats', tabFishes: 'Fishes', langLocale: 'en-US'
+                liveTag: '<span class="dot"></span> LIVE DATA', modalTitle: 'Options', labelLang: 'Select Language', labelTheme: 'Interface Theme',
+                labelGrowth: 'Net Growth', metaGrowth: 'Daily global surplus balance', aiTitleText: 'Cognitive Engine',
+                tabHumans: 'Humans', tabDogs: 'Dogs', tabCats: 'Cats', tabRats: 'Rats', tabFishes: 'Fishes', langLocale: 'en-US'
             },
             pt: {
-                liveTag: '<span class="dot"></span> DADOS AO VIVO', modalTitle: 'Opções', labelLang: 'Escolher Língua',
-                labelGrowth: 'Crescimento Líquido', metaGrowth: 'Balanço diário do excedente global',
-                tabHumans: 'Humanos', tabDogs: 'Cães', tabCats: 'Gatos', tabFishes: 'Peixes', langLocale: 'pt-BR'
+                liveTag: '<span class="dot"></span> DADOS AO VIVO', modalTitle: 'Opções', labelLang: 'Escolher Língua', labelTheme: 'Tema da Interface',
+                labelGrowth: 'Crescimento Líquido', metaGrowth: 'Balanço diário do excedente global', aiTitleText: 'Motor Cognitivo',
+                tabHumans: 'Humanos', tabDogs: 'Cães', tabCats: 'Gatos', tabRats: 'Ratos', tabFishes: 'Peixes', langLocale: 'pt-BR'
             },
             es: {
-                liveTag: '<span class="dot"></span> DATOS EN VIVO', modalTitle: 'Opciones', labelLang: 'Seleccionar Idioma',
-                labelGrowth: 'Crecimiento Neto', metaGrowth: 'Balance de excedente global diario',
-                tabHumans: 'Humanos', tabDogs: 'Perros', tabCats: 'Gatos', tabFishes: 'Peces', langLocale: 'es-ES'
+                liveTag: '<span class="dot"></span> DATOS EN VIVO', modalTitle: 'Opciones', labelLang: 'Seleccionar Idioma', labelTheme: 'Tema de la Interfaz',
+                labelGrowth: 'Crecimiento Neto', metaGrowth: 'Balance de excedente global diario', aiTitleText: 'Motor Cognitivo',
+                tabHumans: 'Humanos', tabDogs: 'Perros', tabCats: 'Gatos', tabRats: 'Ratas', tabFishes: 'Peces', langLocale: 'es-ES'
             },
             fr: {
-                liveTag: '<span class="dot"></span> DONNÉES EN DIRECT', modalTitle: 'Options', labelLang: 'Sélectionner la langue',
-                labelGrowth: 'Croissance Nette', metaGrowth: 'Bilan quotidien de l\'excédent global',
-                tabHumans: 'Humains', tabDogs: 'Chiens', tabCats: 'Chats', tabFishes: 'Poissons', langLocale: 'fr-FR'
+                liveTag: '<span class="dot"></span> DONNÉES EN DIRECT', modalTitle: 'Options', labelLang: 'Sélectionner la langue', labelTheme: 'Thème de l\'interface',
+                labelGrowth: 'Croissance Nette', metaGrowth: 'Bilan quotidien de l\'excédent global', aiTitleText: 'Moteur Cognitif',
+                tabHumans: 'Humains', tabDogs: 'Chiens', tabCats: 'Chats', tabRats: 'Rats', tabFishes: 'Poissons', langLocale: 'fr-FR'
             },
             ja: {
-                liveTag: '<span class="dot"></span> ライブデータ', modalTitle: '設定', labelLang: '言語の選択',
-                labelGrowth: '純増減数', metaGrowth: '1日あたりの世界人口過剰バランス',
-                tabHumans: '人間', tabDogs: '犬', tabCats: '猫', tabFishes: '魚類', langLocale: 'ja-JP'
+                liveTag: '<span class="dot"></span> ライブデータ', modalTitle: '設定', labelLang: '言語の選択', labelTheme: '外観テーマ',
+                labelGrowth: '純増減数', metaGrowth: '1日あたりの世界人口過剰バランス', aiTitleText: '認知分析エンジン',
+                tabHumans: '人間', tabDogs: '犬', tabCats: '猫', tabRats: 'ネズミ', tabFishes: '魚類', langLocale: 'ja-JP'
             },
             ru: {
-                liveTag: '<span class="dot"></span> ЖИВЫЕ ДАННЫЕ', modalTitle: 'Настройки', labelLang: 'Выберите язык',
-                labelGrowth: 'Чистый прирост', metaGrowth: 'Ежедневный глобальный профицитный баланс',
-                tabHumans: 'Люди', tabDogs: 'Собаки', tabCats: 'Кошки', tabFishes: 'Рыбы', langLocale: 'ru-RU'
+                liveTag: '<span class="dot"></span> ЖИВЫЕ ДАННЫЕ', modalTitle: 'Настройки', labelLang: 'Выберите язык', labelTheme: 'Тема интерфейса',
+                labelGrowth: 'Чистый прирост', metaGrowth: 'Ежедневный глобальный профицитный баланс', aiTitleText: 'Когнитивный движок',
+                tabHumans: 'Люди', tabDogs: 'Собаки', tabCats: 'Кошки', tabRats: 'Крысы', tabFishes: 'Рыбы', langLocale: 'ru-RU'
             }
         };
 
@@ -645,12 +690,12 @@
                     ru: { heading: 'Оценка населения мира', subtitle: 'Живые люди на планете Земля', labelBirths: 'Рождений сегодня', labelDeaths: 'Смертей сегодня', metaBirths: '~4.3 рождений в секунду', metaDeaths: '~1.9 смертей в секунду', footer: '&copy; 2026 Платформа народонаселения мира.' }
                 },
                 aiInsights: {
-                    en: '<strong>Humanity Analysis:</strong> Humans exhibit high localized urban grouping. Population scaling is heavily driven by advanced medical infrastructure and industrialized resource management, yielding an exceptional runtime longevity benchmark compared to alternative organic lifeforms.',
-                    pt: '<strong>Análise da Humanidade:</strong> Humanos exibem agrupamento urbano localizado massivo. O crescimento populacional é impulsionado por infraestrutura médica e gestão de recursos industriais, gerando longevidade excepcional em comparação com outros sistemas orgânicos.',
-                    es: '<strong>Análisis de la Humanidad:</strong> Los humanos muestran una alta concentración urbana. Su crecimiento está ligado a infraestructuras médicas y gestión de recursos industrializados, logrando una longevidade superior frente a otras formas de vida.',
-                    fr: '<strong>Analyse de l\'humanité:</strong> Les humains affichent d\'importants regroupements urbains. La croissance est soutenue par des infrastructures médicales avancées, conférant une longévité systémique exceptionnelle.',
-                    ja: '<strong>人類の分析:</strong> 高度な都市集中型構造を持ちます。医学的インフラと資源管理システムにより、他の有機生命体システムと比較して極めて例外的な平均寿命の長さを維持しています。',
-                    ru: '<strong>Анализ человечества:</strong> Человечество демонстрирует высокую плотность урбанизации. Рост поддерживается развитой медициной и распределением ресурсов, что дает высокую продолжительность жизни.'
+                    en: '<p><strong>Hominid Architecture:</strong> Humans represent an apex intellectual class utilizing synthetic tools to fully override basic environmental limits.</p><p>Their global colonization scales through hyper-dense infrastructural complexes. Runtime longevity has expanded exponentially due to advanced medical telemetry and structural modifications to resource access loops.</p>',
+                    pt: '<p><strong>Arquitetura Hominídea:</strong> Humanos representam uma classe intelectual de topo que utiliza ferramentas sintéticas para anular os limites ambientais básicos.</p><p>Sua colonização global se expande através de complexos de infraestrutura hiperdensos. A longevidade biológica aumentou exponencialmente devido à telemetria médica avançada e modificações estruturais nos ciclos de recursos.</p>',
+                    es: '<p><strong>Arquitectura de Homininos:</strong> Los humanos representan una clase intelectual de ápice que utiliza herramientas sintéticas para anular los límites ambientales primarios.</p><p>Su colonización global se expande mediante complejos infraestructurales hiperdensos. La longevidad de su ciclo biológico aumentó debido al desarrollo médico estratégico.</p>',
+                    fr: '<p><strong>Architecture Hominidés:</strong> Les humains incarnent une classe intellectuelle supérieure exploitant des outils synthétiques pour contourner les contraintes écosystémiques de base.</p><p>Leur expansion repose sur des réseaux d\'infrastructure hyper-denses, maximisant la longévité globale via des protocoles médicaux industriels.</p>',
+                    ja: '<p><strong>人類構造の統合分析:</strong> 人類は、人工的ツールを行使して地球環境の基礎的限界値を完全にオーバーライドした最高位の知性体に分類されます。</p><p>超高密度のインフラ構造を構築することで世界規模の植民地化を達成。高度な医療システムと資源ループの最適化により、他の生命体システムと比較して圧倒的な平均寿命を確立しています。</p>',
+                    ru: '<p><strong>Архитектура гоминидов:</strong> Люди представляют собой высший интеллектуальный класс, использующий синтетические инструменты для обхода базовых экологических лимитов.</p><p>Их глобальная экспансия поддерживается гиперплотными инфраструктурными сетями. Продолжительность жизни увеличилась благодаря развитию медицины.</p>'
                 }
             },
             dogs: {
@@ -664,18 +709,18 @@
                     ru: { heading: 'Оценка популяции собак', subtitle: 'Каниды, живущие во всех экосистемах мира', labelBirths: 'Щенков родилось сегодня', labelDeaths: 'Смертей собак сегодня', metaBirths: '~3.8 щенков в секунду', metaDeaths: '~1.4 смертей в секунду', footer: '&copy; 2026 Глобальный реестр канид.' }
                 },
                 aiInsights: {
-                    en: '<strong>Canine Analysis:</strong> Co-evolution behaviors link their population dynamic directly to human socio-economic clusters. High behavioral adaptability permits widespread saturation across varied atmospheric and structural environments.',
-                    pt: '<strong>Análise Canina:</strong> A coevolução atrela sua dinâmica populacional aos aglomerados socioeconômicos humanos. Alta flexibilidade adaptativa permite saturação mista em diversas zonas estruturais.',
-                    es: '<strong>Análisis Canino:</strong> La coevolución vincula su crecimiento directamente con los núcleos humanos. Su adaptabilidad conductual les permite saturar casi cualquier zona geográfica.',
-                    fr: '<strong>Analyse Canine:</strong> La coévolution lie directement leur courbe démographique aux foyers humains. Une plasticité comportementale optimale garantit une large distribution globale.',
-                    ja: '<strong>犬類の分析:</strong> 人類の経済活動領域と共生関係にあります。優れた行動適応能力により、多様な気候帯や人工的構造環境において安定したサチュレーションを保っています。',
-                    ru: '<strong>Анализ собак:</strong> Эволюция связывает их популяцию напрямую с человеческими ресурсами. Поведенческая гибкость позволяет им процветать в любых географических зонах.'
+                    en: '<p><strong>Symbiotic Canines:</strong> Canis lupus familiaris displays an exceptional evolutionary bypass model, anchoring its population index directly to human socio-economic modules.</p><p>Their adaptive metrics exploit behavioral sync algorithms with human handlers, ensuring habitat security and resource allocation across highly diversified structural setups.</p>',
+                    pt: '<p><strong>Caninos Simbióticos:</strong> Canis lupus familiaris exibe um modelo excepcional de desvio evolutivo, ancorando seu índice populacional diretamente aos módulos socioeconômicos humanos.</p><p>Suas métricas adaptativas exploram algoritmos de sincronização comportamental, garantindo segurança habitacional e alocação estável de recursos.</p>',
+                    es: '<p><strong>Caninos Simbióticos:</strong> El Canis lupus familiaris muestra un modelo evolutivo entrelazado, anclando su densidad demográfica de forma directa a los módulos socioeconómicos de los seres humanos.</p><p>Su plasticidad garantiza el acceso automático a recursos energéticos de alta calidad.</p>',
+                    fr: '<p><strong>Canidés Symbiotiques:</strong> Canis lupus familiaris démontre un modèle de dérivation évolutive parfait, ancrant sa courbe de croissance directement sur les modules économiques humains.</p><p>Leur intelligence sociale leur garantit un accès prioritaire aux structures protectrices.</p>',
+                    ja: '<p><strong>共生型犬類の分析:</strong> イヌ（Canis lupus familiaris）は、自らの人口動態インデックスを人類の社会経済活動に直結させるという、極めて稀な進化バイパスモデルを確立しています。</p><p>人間の行動パターンと同調する高度な社会的同調アルゴリズムを実行することにより、本来野生下では不可能なレベルの生息環境の安全性と、安定した資源配分を獲得しています。</p>',
+                    ru: '<p><strong>Симбиотические каниды:</strong> Canis lupus familiaris демонстрирует уникальную эволюционную модель, привязывая свою численность непосредственно к человеческим экономическим модулям.</p><p>Их поведенческий алгоритм обеспечивает им стабильный доступ к ресурсам во всех типах урбанизации.</p>'
                 }
             },
             cats: {
                 basePopulation: 956000000, birthsPerSecond: 4.1, deathsPerSecond: 1.5,
                 translations: {
-                    en: { heading: 'Estimated Cat Population', subtitle: 'Felines domesticated and free-roaming globally', labelBirths: 'Kittens born today', labelDeaths: 'Cat deaths today', metaBirths:saveNumber = '~4.1 kittens/s', metaBirths: '~4.1 kittens/s', metaDeaths: '~1.5 deaths/s', footer: '&copy; 2026 Feline Database.' },
+                    en: { heading: 'Estimated Cat Population', subtitle: 'Felines domesticated and free-roaming globally', labelBirths: 'Kittens born today', labelDeaths: 'Cat deaths today', metaBirths: '~4.1 kittens/s', metaDeaths: '~1.5 deaths/s', footer: '&copy; 2026 Feline Database.' },
                     pt: { heading: 'População Estimada de Gatos', subtitle: 'Felinos domesticados e errantes globalmente', labelBirths: 'Gatinhos nascidos hoje', labelDeaths: 'Mortes de gatos hoje', metaBirths: '~4.1 gatinhos/s', metaDeaths: '~1.5 mortes/s', footer: '&copy; 2026 Banco Felino Global.' },
                     es: { heading: 'Población Estimada de Gatos', subtitle: 'Felinos domésticos y callejeros', labelBirths: 'Gatitos nacidos hoy', labelDeaths: 'Muertes de gatos hoy', metaBirths: '~4.1 por segundo', metaDeaths: '~1.5 por segundo', footer: '&copy; 2026 Base Felina Global.' },
                     fr: { heading: 'Population Estimée de Chats', subtitle: 'Félins domestiques et errants', labelBirths: 'Chatons nés aujourd\'hui', labelDeaths: 'Décès de chats', metaBirths: '~4.1 chatons/s', metaDeaths: '~1.5 décès/s', footer: '&copy; 2026 Base Félines.' },
@@ -683,12 +728,31 @@
                     ru: { heading: 'Оценка популяции кошек', subtitle: 'Домашние и бродячие кошачьи по всему миру', labelBirths: 'Котят родилось сегодня', labelDeaths: 'Смертей кошек сегодня', metaBirths: '~4.1 котят в секунду', metaDeaths: '~1.5 смертей в секунду', footer: '&copy; 2026 Глобальная база данных кошачьих.' }
                 },
                 aiInsights: {
-                    en: '<strong>Feline Analysis:</strong> Felines feature high efficient solitary and micro-colony hunting operations. Their reproductive algorithms demonstrate exceptional expansion indexes when ecological barriers are unmonitored.',
-                    pt: '<strong>Análise Felina:</strong> Felinos exibem dinâmicas de caça solitária e microcolônias eficientes. Seus algoritmos reprodutivos mostram alta expansão quando barreiras ecológicas locais não são monitoradas.',
-                    es: '<strong>Análisis Felino:</strong> Poseen tácticas eficientes en microcolonias. Sus vectores reproductivos demuestran una expansión masiva en ausencia de controles ecológicos severos.',
-                    fr: '<strong>Analyse Félines:</strong> Chasseurs solitaires ou en micro-colonies redoutables. Les indices de reproduction explosent dès que la surveillance écosystémique s\'assouplit.',
-                    ja: '<strong>猫類の分析:</strong> 単独またはマイクロコロニーによる効率的な捕食行動を行います。繁殖アルゴリズムの拡大効率が非常に高く、環境的抑制がないエリアでは急激な増加傾向を示します。',
-                    ru: '<strong>Анализ кошачьих:</strong> Эффективные хищники-одиночки. Их репродуктивный алгоритм демонстрирует взрывной рост при ослаблении эко-контроля.'
+                    en: '<p><strong>Micro-Predator Networks:</strong> Felines execute precise, resource-efficient solitary hunting algorithms. Their domestic integration operates on a facultative social layout.</p><p>When external systemic controls relax, their reproductive engine switches to a vertical scaling pattern, causing rapid saturation spikes in surrounding macro-ecosystems.</p>',
+                    pt: '<p><strong>Redes de Micro-Predadores:</strong> Felinos executam algoritmos precisos e supereficientes de caça solitária. Sua integração doméstica opera em um arranjo social facultativo.</p><p>Quando os controles ecológicos externos relaxam, seu motor reprodutivo alterna para escalonamento vertical rápido, gerando picos massivos de saturação.</p>',
+                    es: '<p><strong>Redes de Micropredadores:</strong> Los felinos ejecutan algoritmos de caza solitaria altamente eficientes. Su integración en núcleos humanos opera bajo un formato social opcional.</p><p>Su velocidad reproductiva desencadena picos demográficos abruptos si se eliminan las barreras artificiales.</p>',
+                    fr: '<p><strong>Réseaux de Micro-Prédateurs:</strong> Les félins déploient des algorithmes de chasse solitaires optimisés. Leur intégration domestique repose sur un modèle social purement facultatif.</p><p>En l\'absence de contrôle direct, leur système génère une courbe exponentielle de saturation écosystémique.</p>',
+                    ja: '<p><strong>単独型マイクロプレデターの分析:</strong> ネコ科動物は、エネルギー消費を最小限に抑えた極めて高効率な単独狩猟アルゴリズムを実行します。人間社会への融合は「選択的社会性構造」に基づいて維持されています。</p><p>外部システムによる抑制が排除された環境下では、繁殖エンジンが瞬時に垂直スケーリングモードへと移行し、周辺マクロ生態系を高速でサチュレーション（飽和）させるポテンシャルを有します。</p>',
+                    ru: '<p><strong>Сети микрохищников:</strong> Кошачьи используют высокоэффективные алгоритмы одиночной охоты. Их интеграция в дома людей работает как факультативная социальная структура.</p><p>При ослаблении эко-контроля репродуктивный движок моментально переходит в фазу вертикального роста.</p>'
+                }
+            },
+            rats: {
+                basePopulation: 14500000000, birthsPerSecond: 185, deathsPerSecond: 120,
+                translations: {
+                    en: { heading: 'Estimated Rodent Population', subtitle: 'Rats and commensal rodents operating in shadows', labelBirths: 'Rodents born today', labelDeaths: 'Rodent losses today', metaBirths: '~185 born per second', metaDeaths: '~120 losses per second', footer: '&copy; 2026 Rodent Analytics Engine.' },
+                    pt: { heading: 'População Estimada de Ratos', subtitle: 'Ratos e roedores comensais operando nas sombras', labelBirths: 'Ratos nascidos hoje', labelDeaths: 'Baixas de roedores hoje', metaBirths: '~185 por segundo', metaDeaths: '~120 por segundo', footer: '&copy; 2026 Motor Analítico de Roedores.' },
+                    es: { heading: 'Población Estimada de Ratas', subtitle: 'Roedores comensales operando en el subsuelo', labelBirths: 'Ratas nacidas hoy', labelDeaths: 'Bajas de roedores hoy', metaBirths: '~185 por segundo', metaDeaths: '~120 por segundo', footer: '&copy; 2026 Analítica Global de Roedores.' },
+                    fr: { heading: 'Population Estimée des Rats', subtitle: 'Rongeurs commensaux évoluant dans l\'ombre', labelBirths: 'Rongeurs nés aujourd\'hui', labelDeaths: 'Pertes de rongeurs', metaBirths: '~185 rats/s', metaDeaths: '~120 pertes/s', footer: '&copy; 2026 Moniteur des Rongeurs.' },
+                    ja: { heading: '推定ネズミ総人口', subtitle: '都市の暗部および野生下に生息する齧歯類の総数', labelBirths: '本日の齧歯類出生数', labelDeaths: '本日のネズミ死亡数', metaBirths: '1秒あたり約185匹出生', metaDeaths: '1秒あたり約120匹減少', footer: '&copy; 2026 全世界齧歯類動態分析エンジン' },
+                    ru: { heading: 'Оценка популяции крыс', subtitle: 'Комменсальные грызуны, действующие в тени городов', labelBirths: 'Грызунов родилось сегодня', labelDeaths: 'Потери грызунов сегодня', metaBirths: '~185 рождений в секунду', metaDeaths: '~120 потерь в секунду', footer: '&copy; 2026 Мониторинг популяции грызунов.' }
+                },
+                aiInsights: {
+                    en: '<p><strong>Commensal Dominance:</strong> Rattus variants display a high-frequency reproductive matrix optimized for systemic survival under extreme pressure loops.</p><p>They mirror human expansion as stealth consumers, capitalizing directly on logistical organic waste pipelines. Their decentralized social nodes make collective structural containment incredibly complex.</p>',
+                    pt: '<p><strong>Dominância Comensal:</strong> Variantes de Rattus exibem uma matriz reprodutiva de alta frequência, otimizada para sobrevivência sistêmica sob severas pressões externas.</p><p>Eles espelham a expansão humana agindo como consumidores invisíveis, aproveitando as falhas no descarte de recursos. Seus nós descentralizados sabotam contenções estruturais clássicas.</p>',
+                    es: '<p><strong>Dominio Comensal:</strong> Las variantes de Rattus despliegano una matriz reproductiva de alta frecuencia optimizada para la resiliencia sistémica radical.</p><p>Su expansión copia en las sombras el crecimiento humano, explotando los excedentes energéticos no asegurados de los sistemas logísticos urbanos.</p>',
+                    fr: '<p><strong>Dominance Commensale:</strong> Les variantes de Rattus possèdent une matrice reproductive à haute fréquence, configurée pour résister aux pires cycles d\'éradication.</p><p>Leur expansion calque l\'étalement urbain, convertissant instantanément les pertes logistiques humaines en biomasse vive.</p>',
+                    ja: '<p><strong>集団型コミニュティの分析:</strong> クマネズミ属（Rattus）は、極度な外部圧迫および駆除ループ下においても確実に生存を維持できるようチューニングされた、超高頻度の繁殖マトリクスを実行します。</p><p>人類の都市インフラの拡大を「ステルス型消費者」として追従し、物流や廃棄システムから排出される膨大な余剰エネルギー資源をダイレクトにバイオマスへと変換。分散化された社会組織ノードを形成するため、構造的な一斉制御を困難にさせています。</p>',
+                    ru: '<p><strong>Комменсальное доминирование:</strong> Виды Rattus используют высокочастотную репродуктивную матрицу, оптимизированную для выживания в условиях жесткого уничтожения.</p><p>Они зеркально повторяют экспансию человека, выступая теневыми потребителями органических отходов. Децентрализация их гнезд делает полную очистку невозможной.</p>'
                 }
             },
             fishes: {
@@ -697,17 +761,17 @@
                     en: { heading: 'Estimated Wild Fish Population', subtitle: 'Marine and freshwater fish active in world waters', labelBirths: 'Fish spawned today', labelDeaths: 'Natural & biomass losses', metaBirths: '~125,000 fry/s', metaDeaths: '~124,500 losses/s', footer: '&copy; 2026 Biomass Monitor.' },
                     pt: { heading: 'População Estimada de Peixes Selvagens', subtitle: 'Peixes marinhos e de água doce nas águas mundiais', labelBirths: 'Alevinos gerados hoje', labelDeaths: 'Perdas naturais e pescas', metaBirths: '~125.000 larvas/s', metaDeaths: '~124.500 perdas/s', footer: '&copy; 2026 Monitor de Biomassa.' },
                     es: { heading: 'Población Estimada de Peces', subtitle: 'Peces marinos y continentales activos', labelBirths: 'Alevines nacidos hoy', labelDeaths: 'Pérdidas de biomasa', metaBirths: '~125.000/s', metaDeaths: '~124.500/s', footer: '&copy; 2026 Monitor de Biomasa Oceanográfica.' },
-                    fr: { heading: 'Population de Poissons Sauvages', subtitle: 'Poissons marins et d\'eau douce actifs', labelBirths: 'Alvins éclos aujourd\'hui', labelDeaths: 'Pertes de biomasse', metaBirths: '~125k alvins/s', metaDeaths: '~124.5k pertes/s', footer: '&copy; 2026 Moniteur de Biomasse Océanique.' },
-                    ja: { heading: '推定野生魚類の総数', subtitle: '地球上の海洋および淡水域に生息する全魚類', labelBirths: '本日孵化した稚魚', labelDeaths: '自然死および漁獲捕獲数', metaBirths: '1秒あたり約125,000匹孵化', metaDeaths: '1秒あたり約124,500匹減少', footer: '&copy; 2026 海洋資源バイオマスモニター' },
+                    fr: { heading: 'Population de Poissons Sauvages', subtitle: 'Poissons marins et d\'eau douce actifs', labelBirths: 'Alvins éclos aujourd\'hui', labelDeaths: 'Pertes de biomasse', metaBirths: ExtNum = '~125k alvins/s', metaBirths: '~125k alvins/s', metaDeaths: '~124.5k pertes/s', footer: '&copy; 2026 Moniteur de Biomasse Océanique.' },
+                    ja: { heading: '推定野生魚類の総数', subtitle: '地球上の海洋および淡水域に生息する全魚类', labelBirths: '本日孵化した稚魚', labelDeaths: '自然死および漁獲捕獲数', metaBirths: '1秒あたり約125,000匹孵化', metaDeaths: '1秒あたり約124,500匹減少', footer: '&copy; 2026 海洋資源バイオマスモニター' },
                     ru: { heading: 'Оценка популяции диких рыб', subtitle: 'Морские и пресноводные рыбы в гидросфере', labelBirths: 'Мальков вылупилось сегодня', labelDeaths: 'Естественные потери и вылов', metaBirths: '~125 000 мальков в секунду', metaDeaths: '~124 500 потерь в секунду', footer: '&copy; 2026 Мониторинг океанической биомассы.' }
                 },
                 aiInsights: {
-                    en: '<strong>Oceanic Biomass Analysis:</strong> Massive localized spawns yield volatile, extreme scaling metrics. Subterranean and maritime ecosystems represent 70%+ of organic engine operations on Earth, heavily exposed to industrial harvesting models.',
-                    pt: '<strong>Análise de Biomassa Oceanográfica:</strong> Desovas massivas geram métricas de alta volatilidade. Os ecossistemas aquáticos gerenciam mais de 70% do mecanismo orgânico do planeta.',
-                    es: '<strong>Análisis de Biomasa Marina:</strong> Desoves masivos producen fluctuaciones extremas. El motor acuático comprende más del 70% de la actividad orgánica planetaria global.',
-                    fr: '<strong>Analyse Biomasse Océanique:</strong> Les pontes massives provoquent des pics de croissance extrêmes. Le moteur marin gère plus de 70% des cycles organiques de la biosphère.',
-                    ja: '<strong>海洋バイオマスの分析:</strong> 大規模な産卵により非常に極端な増減数を示します。地球上の全有機生命体サイクルの70%以上を占めており、環境変動の影響を最もダイレクトに受けます。',
-                    ru: '<strong>Анализ гидробионотов:</strong> Массовый нерест вызывает колоссальные колебания численности. Водные экосистемы составляют более 70% всего органического движка планеты.'
+                    en: '<p><strong>Oceanic Sub-Systems:</strong> Marine biomass presents massive, highly volatile generative spikes. Aquatic populations govern more than 70% of organic carbon transformation actions on Earth.</p><p>Their telemetry maps remain heavily susceptible to shifting temperature gradients and intensive macro-industrial extraction frameworks.</p>',
+                    pt: '<p><strong>Subsistemas Oceânicos:</strong> A biomassa marinha apresenta picos gerativos massivos e de alta volatilidade. Populações aquáticas controlam mais de 70% das ações de transformação de carbono orgânico no planeta.</p><p>Seus mapas telemétricos permanecem vulneráveis a gradientes térmicos e extração macroindustrial.</p>',
+                    es: '<p><strong>Subsistemas Oceánicos:</strong> La biomasa marina presenta picos generativos masivos de alta volatilidad. Las comunidades acuáticas procesan más del 70% de la conversión de carbono orgánico.</p><p>Sus equilibrios sufrem un estrés severo ante las anomalías térmicas y la extracción a escala industrial.</p>',
+                    fr: '<p><strong>Sous-Systèmes Océaniques:</strong> La biomasse marine affiche des fluctuations génératives massives et critiques. Les organismes aquatiques gèrent plus de 70% des transferts de carbone organique globaux.</p><p>Leur stabilité est fortement ébranlée par les anomalies thermiques et l\'exploitation macro-industrielle.</p>',
+                    ja: '<p><strong>海洋サブシステムの動態:</strong> 水棲バイオマスは、極めて大規模かつ揮発性の高いライフサイクル（世代交代）スパイクを示します。全水棲人口は、地球上の全有機炭素循環・変換プロセスの70%以上を制御しています。</p><p>気候変動に伴う海水温のグラデーション変化、および超大規模なマクロ産業的漁獲アプローチに対し、最も脆弱で変動しやすいデータ層に位置します。</p>',
+                    ru: '<p><strong>Океанические подсистемы:</strong> Морская биомасса демонстрирует колоссальные всплески численности. Водные популяции контролируют более 70% круговорота органического углерода.</p><p>Их стабильность напрямую зависит от тепловых градиентов и объемов промышленного вылова.</p>'
                 }
             }
         };
@@ -718,6 +782,10 @@
             if(open) { renderAiContent(); }
         }
 
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+        }
+
         function setLanguage(lang) {
             currentLang = lang;
             const ui = translationTable[lang];
@@ -725,12 +793,15 @@
             document.getElementById('live-tag').innerHTML = ui.liveTag;
             document.getElementById('modal-title').innerText = ui.modalTitle;
             document.getElementById('label-lang').innerText = ui.labelLang;
+            document.getElementById('label-theme').innerText = ui.labelTheme;
             document.getElementById('label-growth').innerText = ui.labelGrowth;
             document.getElementById('meta-growth').innerText = ui.metaGrowth;
+            document.getElementById('ai-title-text').innerText = ui.aiTitleText;
             
             document.getElementById('tab-humans').innerText = ui.tabHumans;
             document.getElementById('tab-dogs').innerText = ui.tabDogs;
             document.getElementById('tab-cats').innerText = ui.tabCats;
+            document.getElementById('tab-rats').innerText = ui.tabRats;
             document.getElementById('tab-fishes').innerText = ui.tabFishes;
 
             renderTextContent();
@@ -742,6 +813,7 @@
             document.getElementById('tab-humans').classList.toggle('active', mode === 'humans');
             document.getElementById('tab-dogs').classList.toggle('active', mode === 'dogs');
             document.getElementById('tab-cats').classList.toggle('active', mode === 'cats');
+            document.getElementById('tab-rats').classList.toggle('active', mode === 'rats');
             document.getElementById('tab-fishes').classList.toggle('active', mode === 'fishes');
             
             document.body.className = `mode-${mode}`;
