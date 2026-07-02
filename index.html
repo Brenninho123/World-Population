@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Metrics Platform — Cyber-Metrics OS v7</title>
+    <title>Global Metrics Platform — Cyber-Metrics OS v8</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -78,6 +78,27 @@
             overflow-x: hidden;
             transition: background 0.5s ease, color 0.5s ease;
         }
+
+        /* Persistent Performance HUD overlay */
+        #fps-hud {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(5, 7, 15, 0.85);
+            border: 1px solid var(--border-alpha-heavy);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #10b981;
+            z-index: 9999;
+            pointer-events: none;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            letter-spacing: 0.5px;
+        }
+        #fps-hud span { color: var(--text-muted); font-weight: 400; }
 
         header {
             display: flex;
@@ -299,7 +320,6 @@
             transition: transform 0.15s ease-out;
         }
 
-        /* Flash pulse effect during calculation intervals */
         .counter.pulse-light {
             animation: textUpdatePulse 0.4s ease;
         }
@@ -470,6 +490,8 @@
 </head>
 <body data-theme="dark" class="view-population">
 
+    <div id="fps-hud">FPS: <span id="fps-val">0</span> — <span id="ms-val">0</span>ms</div>
+
     <header>
         <div class="header-left">
             <button class="ai-btn" onclick="toggleSidebar(true)">
@@ -546,7 +568,7 @@
         <section id="screen-timezone" class="app-view-screen">
             <div class="counter-section">
                 <h1 id="tz-heading">Matrix Temporal Global</h1>
-                <p class="subtitle" id="tz-subtitle">Sincronização de relógios em tempo real com servidores atômicos mundiais</p>
+                <p class="subtitle" id="tz-subtitle">...</p>
             </div>
             
             <div class="tz-container" id="tz-grid-wrapper">
@@ -561,7 +583,7 @@
                 <div class="ai-title">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 7.54 16.59A4 4 0 0 1 16 22H8a4 4 0 0 1-3.54-3.41A10 10 0 0 1 12 2z"></path></svg>
                     <span id="ai-title-text">AI Consultant</span>
-                    <span class="ai-badge">v7.0</span>
+                    <span class="ai-badge">v8.0</span>
                 </div>
                 <button class="close-btn" onclick="toggleSidebar(false)">&times;</button>
             </div>
@@ -592,6 +614,13 @@
                     <option value="light">Light Theme</option>
                 </select>
             </div>
+            <div class="form-group">
+                <label id="label-fps-toggle">Exibir Contador FPS</label>
+                <select class="select-input" onchange="toggleFpsHud(this.value)">
+                    <option value="off" selected>Ocultar Métricas</option>
+                    <option value="on">Mostrar FPS na Tela</option>
+                </select>
+            </div>
             <div id="battery-saving-group" class="form-group hidden">
                 <label id="label-battery">Battery Optimization (Mobile)</label>
                 <select class="select-input" onchange="setBatterySaving(this.value)">
@@ -612,39 +641,44 @@
         let currentLang = 'pt';
         let batterySavingActive = false;
         let updateInterval = 100;
+        let showFps = false;
+
+        // FPS Engine Variables
+        let lastFpsUpdate = performance.now();
+        let framesCount = 0;
 
         const translationTable = {
             en: {
                 liveTag: '<span class="dot"></span> LIVE DATA', modalTitle: 'Options', labelLang: 'Select Language', labelTheme: 'Interface Theme', labelBattery: 'Battery Optimization (Mobile)',
-                labelGrowth: 'Net Growth', metaGrowth: 'Daily global surplus balance', aiTitleText: 'Cognitive Matrix v7.0',
+                labelGrowth: 'Net Growth', metaGrowth: 'Daily global surplus balance', aiTitleText: 'Cognitive Matrix v8.0', labelFpsToggle: 'Display FPS Counter',
                 tabHumans: 'Humans', tabDogs: 'Dogs', tabCats: 'Cats', tabRats: 'Rats', tabFishes: 'Fishes', langLocale: 'en-US',
                 txtOptPop: 'Population', txtOptTz: 'Timezone', tzHeading: 'Global Temporal Matrix', tzSubtitle: 'Real-time structural clocks synced globally', localLabel: 'Your Location',
                 aiLabels: { struct1: 'Systemic Architecture', struct2: 'Demographic Blueprint', struct3: 'Biosphere Strain/Vulnerability' }
             },
             pt: {
                 liveTag: '<span class="dot"></span> DADOS AO VIVO', modalTitle: 'Opções', labelLang: 'Escolher Língua', labelTheme: 'Tema da Interface', labelBattery: 'Economia de Bateria (Mobile)',
-                labelGrowth: 'Crescimento Líquido', metaGrowth: 'Balanço diário do excedente global', aiTitleText: 'Matriz Cognitiva v7.0',
+                labelGrowth: 'Crescimento Líquido', metaGrowth: 'Balanço diário do excedente global', aiTitleText: 'Matriz Cognitiva v8.0', labelFpsToggle: 'Exibir Contador FPS',
                 tabHumans: 'Humanos', tabDogs: 'Cães', tabCats: 'Gatos', tabRats: 'Ratos', tabFishes: 'Peixes', langLocale: 'pt-BR',
                 txtOptPop: 'População', txtOptTz: 'Fuso Horário', tzHeading: 'Matriz Temporal Global', tzSubtitle: 'Sincronização de relógios estruturais em tempo real', localLabel: 'Sua Localização',
                 aiLabels: { struct1: 'Arquitetura Sistêmica', struct2: 'Impressão Demográfica', struct3: 'Estresse/Vulnerabilidade da Biosfera' }
             },
             es: {
                 liveTag: '<span class="dot"></span> DATOS EN VIVO', modalTitle: 'Opciones', labelLang: 'Seleccionar Idioma', labelTheme: 'Tema de la Interfaz', labelBattery: 'Ahorro de Batería (Móvil)',
-                labelGrowth: 'Crecimiento Neto', metaGrowth: 'Balance de excedente global diario', aiTitleText: 'Matriz Cognitiva v7.0',
+                labelGrowth: 'Crecimiento Neto', metaGrowth: 'Balance de excedente global diario', aiTitleText: 'Matriz Cognitiva v8.0', labelFpsToggle: 'Mostrar Contador FPS',
                 tabHumans: 'Humanos', tabDogs: 'Perros', tabCats: 'Gatos', tabRats: 'Ratas', tabFishes: 'Peces', langLocale: 'es-ES',
                 txtOptPop: 'Población', txtOptTz: 'Zona Horaria', tzHeading: 'Matriz Temporal Global', tzSubtitle: 'Relojes estructurales sincronizados en tiempo real', localLabel: 'Tu Ubicación',
                 aiLabels: { struct1: 'Arquitectura Sistémica', struct2: 'Plano Demográfico', struct3: 'Vulnerabilidad de la Biosfera' }
             },
             fr: {
                 liveTag: '<span class="dot"></span> DONNÉES EN DIRECT', modalTitle: 'Options', labelLang: 'Sélectionner la langue', labelTheme: 'Thème de l\'interface', labelBattery: 'Économie de Batterie (Mobile)',
-                labelGrowth: 'Croissance Nette', metaGrowth: 'Bilan quotidien de l\'excédent global', aiTitleText: 'Matrice Cognitive v7.0',
+                labelGrowth: 'Croissance Nette', metaGrowth: 'Bilan quotidien de l\'excédent global', aiTitleText: 'Matrice Cognitive v8.0', labelFpsToggle: 'Afficher Compteur FPS',
                 tabHumans: 'Humains', tabDogs: 'Chiens', tabCats: 'Chats', tabRats: 'Rats', tabFishes: 'Poissons', langLocale: 'fr-FR',
                 txtOptPop: 'Population', txtOptTz: 'Fuseau Horaire', tzHeading: 'Matrice Temporelle Globale', tzSubtitle: 'Horloges synchronisées en temps réel à l\'échelle mondiale', localLabel: 'Votre Position',
                 aiLabels: { struct1: 'Architecture Systémique', struct2: 'Schéma Démographique', struct3: 'Vulnérabilité Biosphérique' }
             },
             ja: {
                 liveTag: '<span class="dot"></span> ライブデータ', modalTitle: '設定', labelLang: '言語の選択', labelTheme: '外観テーマ', labelBattery: 'バッテリー節約（モバイルのみ）',
-                labelGrowth: '純増減数', metaGrowth: '1日あたりの世界人口過剰バランス', aiTitleText: '高次元認知マトリクス v7.0',
+                labelGrowth: '純増減数', metaGrowth: '1日あたりの世界人口過剰バランス', aiTitleText: '高次元認知マトリクス v8.0', labelFpsToggle: 'FPSカウンター表示',
                 tabHumans: '人間', tabDogs: '犬', tabCats: '猫', tabRats: 'ネズミ', tabFishes: '魚類', langLocale: 'ja-JP',
                 txtOptPop: '人口メтриクス', txtOptTz: '時間軸・タイムゾーン', tzHeading: 'グローバル・タイム・マトリクス', tzSubtitle: '世界原子時計と同期されたリアルタイム構造クロック', localLabel: '現在地',
                 aiLabels: { struct1: 'システムアーキテクチャ分析', struct2: '人口統計学的ブループリント', struct3: 'バイオスフィアへの負荷／脆弱性検証' }
@@ -683,7 +717,7 @@
                     pt: ['Modelo de evolução comensal otimizado para alinhamento socioemocional com humanos.', 'Padrão de crescimento distribuído espelhando a expansão habitacional humana.', 'Protegidos de dinâmicas de predação selvagem devido ao isolamento urbano.'],
                     es: ['Modelo evolutivo simbiótico co-adaptado para acoplamiento emocional.', 'Distribución geográfica paralela al crecimiento habitacional de las ciudades.', 'Alta protección frente a vectores de extinción silvestres.'],
                     fr: ['Modèle d\'évolution commensale configuré pour un alignement socio-émotionnel.', 'Courbe de distribution calquée sur l\'étalement des zones anthropiques.', 'Immunité relative face aux pressions sélectives sauvages.'],
-                    ja: ['人間の主要ノードとの社会・感情的同調に最適化された、共生進化モデル。', '人類の居住区拡大や都市空間の広がりに完全に追従する人口拡大。', '人工的な生活環境に隔離されているため、野生下特有の捕食からは保護されています。']
+                    ja: ['人間の主要ノードとの社会・感情적同調に最適化された、共生進化モデル。', '人類の居住区拡大や都市空間の広がりに完全に追従する人口拡大。', '人工的な生活環境に隔離されているため、野生下特有の捕食からは保護されています。']
                 }
             },
             cats: { basePopulation: 956000000, birthsPerSecond: 4.1, deathsPerSecond: 1.5, translations: { pt: { heading: 'População Estimada de Gatos', subtitle: 'Felinos domesticados e errantes', labelBirths: 'Gatinhos nascidos hoje', labelDeaths: 'Mortes hoje', metaBirths: '~4.1/s', metaDeaths: '~1.5/s', footer: '&copy; 2026 Gatos OS.' }, en: { heading: 'Estimated Cat Population', subtitle: 'Felines domesticated globally', labelBirths: 'Born today', labelDeaths: 'Deaths today', metaBirths: '~4.1/s', metaDeaths: '~1.5/s', footer: '&copy; 2026 Cats OS.' }, es: { heading: 'Población de Gatos', subtitle: 'Felinos domésticos', labelBirths: 'Nacidos hoy', labelDeaths: 'Muertes', metaBirths: '~4.1/s', metaDeaths: '~1.5/s', footer: '' }, fr: { heading: 'Population des Chats', subtitle: 'Chats', labelBirths: 'Naissances', labelDeaths: 'Décès', metaBirths: '~4.1/s', metaDeaths: '~1.5/s', footer: '' }, ja: { heading: '猫の人口', subtitle: '猫の総数', labelBirths: '出生', labelDeaths: '死亡', metaBirths: '~4.1/s', metaDeaths: '~1.5/s', footer: '' } }, aiInsights: { en: ['Solitary carnivores functioning under a facultative architecture.', 'Hyper-exponential expansion vectors when non-monitored.', 'High tactical damage capacity on micro-fauna.'], pt: ['Carnívoros solitários operando sob domesticação facultativa.', 'Vetores de expansão hiperexponencial na ausência de monitoramento.', 'Alto impacto de predação sobre a microfauna em zonas suburbanas.'], es: ['Carnívoros independientes.', 'Crecimiento exponencial brusco.', 'Destructivos con la microfauna.'], fr: ['Carnivores solitaires.', 'Vecteurs hyper-exponentiels.', 'Forte pression prédatrice.'], ja: ['単独行動好む肉食。', '指数関数的な繁殖。', '小型生命への高い捕食能力。'] } },
@@ -694,7 +728,7 @@
         const timezoneHubs = [
             { id: 'local', name: 'Sua Localização', zone: undefined, isLocal: true },
             { id: 'london', name: 'London (GMT)', zone: 'Europe/London', isLocal: false },
-            { id: 'ny', name: 'New York (EST)', zone: 'America/New York', isLocal: false },
+            { id: 'ny', name: 'New York (EST)', zone: 'America/New_York', isLocal: false },
             { id: 'tokyo', name: 'Tokyo (JST)', zone: 'Asia/Tokyo', isLocal: false },
             { id: 'sp', name: 'São Paulo (BRT)', zone: 'America/Sao_Paulo', isLocal: false }
         ];
@@ -712,8 +746,11 @@
             if(targetView === 'timezone') { renderTimezones(); }
         }
 
+        // Sistema dinâmico e refinado de relógio global
         function renderTimezones() {
             const wrapper = document.getElementById('tz-grid-wrapper');
+            if (!wrapper) return;
+            
             const locale = translationTable[currentLang].langLocale;
             const labelLocal = translationTable[currentLang].localLabel;
             
@@ -734,10 +771,11 @@
                 dateString = now.toLocaleDateString(locale, optionsDate);
                 
                 if(!hub.isLocal) {
-                    const formatter = new Intl.DateTimeFormat('en', { timeZone: hub.zone, timeZoneName: 'short' });
-                    const parts = formatter.formatToParts(now);
-                    const tzName = parts.find(p => p.type === 'timeZoneName');
-                    offsetString = tzName ? tzName.value : '';
+                    try {
+                        const parts = new Intl.DateTimeFormat(locale, { timeZone: hub.zone, timeZoneName: 'short' }).formatToParts(now);
+                        const tzName = parts.find(p => p.type === 'timeZoneName');
+                        offsetString = tzName ? tzName.value : '';
+                    } catch(e) { offsetString = 'GMT'; }
                 } else {
                     const offsetMin = -now.getTimezoneOffset();
                     const hours = Math.floor(Math.abs(offsetMin) / 60);
@@ -756,6 +794,31 @@
             });
             wrapper.innerHTML = html;
         }
+
+        // Controle do Painel HUD de FPS
+        function toggleFpsHud(value) {
+            showFps = (value === 'on');
+            document.getElementById('fps-hud').style.display = showFps ? 'block' : 'none';
+        }
+
+        // Loop de Renderização de Performance Nativo (rAF)
+        function runPerformanceEngine(timestamp) {
+            framesCount++;
+            if (timestamp > lastFpsUpdate + 1000) {
+                const currentFps = Math.round((framesCount * 1000) / (timestamp - lastFpsUpdate));
+                const cycleTime = (performance.now() - timestamp).toFixed(1);
+                
+                if (showFps) {
+                    document.getElementById('fps-val').innerText = currentFps;
+                    document.getElementById('ms-val').innerText = Math.abs(cycleTime);
+                }
+                
+                framesCount = 0;
+                lastFpsUpdate = timestamp;
+            }
+            requestAnimationFrame(runPerformanceEngine);
+        }
+        requestAnimationFrame(runPerformanceEngine);
 
         function detectMobileDevice() {
             const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
@@ -799,6 +862,7 @@
             document.getElementById('label-growth').innerText = ui.labelGrowth;
             document.getElementById('meta-growth').innerText = ui.metaGrowth;
             document.getElementById('ai-title-text').innerText = ui.aiTitleText;
+            document.getElementById('label-fps-toggle').innerText = ui.labelFpsToggle;
             
             document.getElementById('tab-humans').innerText = ui.tabHumans;
             document.getElementById('tab-dogs').innerText = ui.tabDogs;
@@ -883,7 +947,7 @@
                 
                 if(!batterySavingActive) {
                     counterEl.classList.remove('pulse-light');
-                    void counterEl.offsetWidth; // Trigger DOM reflow for css anim restart
+                    void counterEl.offsetWidth; 
                     counterEl.classList.add('pulse-light');
                 }
 
